@@ -21,8 +21,8 @@ public class runGame {
 		int num=0;
 		while(board.notfinish()) {
 			board.print();
-			int x=0, y=0;
 			
+			int x=0, y=0;//input
 			while(x<1 || y<1 || x>8 || y>8) {// 이동할 위치 고르기
 				x= scn.nextInt();
 				y= scn.nextInt();
