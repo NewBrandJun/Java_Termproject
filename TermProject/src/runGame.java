@@ -15,7 +15,6 @@ public class runGame {
 		 * }
 		 */
 		
-		
 		Board board= new Board();// 게임 시작  & initialize
 		Scanner scn = new Scanner(System.in);
 		int num=0;
@@ -27,13 +26,13 @@ public class runGame {
 			
 			if(board.check(tmp)) {//Pass 확인
 				board.print();
-				
 				int x=0, y=0;//input
 				while(board.select(x-1, y-1, tmp)) {// 이동할 위치 고르기
 					if(num%2==0) System.out.print("Black: "); //검정색 부터 시작
 					else System.out.print("White: ");
 					x= scn.nextInt();
 					y= scn.nextInt();
+					//hint는 -1, -1입력
 				}
 				
 				board.reverse(x-1, y-1, tmp); //뒤집기

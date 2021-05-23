@@ -254,8 +254,26 @@ public class Board {
 		return false;
 	}
 	
+	private void hint(char player_color) {
+		int i, j;
+		System.out.print("Hint: ");
+		for(i=0;i<N; i++) {
+			for(j=0; j<N; j++) {
+				if(!select(i, j, player_color)) {
+					int a=i+1, b=j+1;
+					System.out.print("("+ a + ", "+ b + ") ");
+				}
+			}
+		}
+		System.out.print("\n");
+	}
+	
 	public boolean select(int i, int j, char player_color) {
-		if(i<0 || j<0 || i>N-1 || j>N-1) return true;
+		if(i==-2 && j==-2) {//hint
+			this.hint(player_color);
+			return true;
+		}
+		else if(i<0 || j<0 || i>N-1 || j>N-1) return true;
 		else if(board[i][j].getColor()!=' ') return true;
 		
 		this.check=0;
