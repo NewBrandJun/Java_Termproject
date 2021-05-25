@@ -34,6 +34,10 @@ public class Othello {
 		else if(color=='w') this.pr_c='б█';
 		else this.pr_c='бр';
 	}
+	
+	public void setPr_c(char mark) {
+		this.pr_c=mark;
+	}
 
 	public void setX(int x) {
 		this.x = x;

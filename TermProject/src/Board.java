@@ -254,26 +254,27 @@ public class Board {
 		return false;
 	}
 	
-	private void hint(char player_color) {
+	public void hint(char player_color) {
 		int i, j;
-		System.out.print("Hint: ");
 		for(i=0;i<N; i++) {
 			for(j=0; j<N; j++) {
 				if(!select(i, j, player_color)) {
-					int a=i+1, b=j+1;
-					System.out.print("("+ a + ", "+ b + ") ");
+					board[i][j].setPr_c('*');
 				}
 			}
 		}
-		System.out.print("\n");
+		this.print();
+		for(i=0;i<N; i++) {
+			for(j=0; j<N; j++) {
+				if(board[i][j].getPr_c()=='*') {
+					board[i][j].setPr_c('бр');
+				}
+			}
+		}
 	}
 	
 	public boolean select(int i, int j, char player_color) {
-		if(i==-2 && j==-2) {//hint
-			this.hint(player_color);
-			return true;
-		}
-		else if(i<0 || j<0 || i>N-1 || j>N-1) return true;
+		if(i<0 || j<0 || i>N-1 || j>N-1) return true;
 		else if(board[i][j].getColor()!=' ') return true;
 		
 		this.check=0;

@@ -15,6 +15,13 @@ public class runGame {
 		 * }
 		 */
 		
+		/*
+		 * 만약 GUI에서 색을 고르고 변수에 저장할 수 있으면 아래와 같이 변경(예: char player_color= 'w' or 'b')
+		 * 
+		 * board.select(x-1, y-1, player_color);
+		 * board.reverse(x-1, y-1, player_color);
+		 */
+		
 		Board board= new Board();// 게임 시작  & initialize
 		Scanner scn = new Scanner(System.in);
 		int num=0;
@@ -25,16 +32,14 @@ public class runGame {
 			if(num%2==0) tmp='b'; //검정색 부터 시작
 			
 			if(board.check(tmp)) {//Pass 확인
-				board.print();
+				board.hint(tmp);
 				int x=0, y=0;//input
 				while(board.select(x-1, y-1, tmp)) {// 이동할 위치 고르기
 					if(num%2==0) System.out.print("Black: "); //검정색 부터 시작
 					else System.out.print("White: ");
 					x= scn.nextInt();
 					y= scn.nextInt();
-					//hint는 -1, -1입력
 				}
-				
 				board.reverse(x-1, y-1, tmp); //뒤집기
 				board.count();
 			}
@@ -44,14 +49,9 @@ public class runGame {
 				ch=num;
 			}
 			num++;
-			
-			/*
-			 * 만약 GUI에서 색을 고르고 변수에 저장할 수 있으면 아래와 같이 변경(예: char player_color= 'w' or 'b')
-			 * 
-			 * board.select(x-1, y-1, player_color);
-			 * board.reverse(x-1, y-1, player_color);
-			 */
 		}
+		
+		//결과(게임 끝)
 		board.print();
 		board.result();
 	}
