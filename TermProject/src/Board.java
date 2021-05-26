@@ -230,7 +230,7 @@ public class Board {
 				else if(board[i][j].getColor()=='w') this.white++;
 			}
 		}
-		System.out.println("black: " + this.black + "\twhite: " + this.white + "\n");
+		System.out.println("\nblack: " + this.black + "\twhite: " + this.white + "\n");
 	}
 	
 	public boolean check(char player_color) {

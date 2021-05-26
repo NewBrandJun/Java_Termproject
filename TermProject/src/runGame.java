@@ -25,9 +25,8 @@ public class runGame {
 		Board board= new Board();// 게임 시작  & initialize
 		Scanner scn = new Scanner(System.in);
 		int num=0;
+		int ch=0;
 		while(board.notfinish()) {
-			int ch=0;
-			
 			char tmp='w';
 			if(num%2==0) tmp='b'; //검정색 부터 시작
 			
@@ -53,6 +52,7 @@ public class runGame {
 		
 		//결과(게임 끝)
 		board.print();
+		board.count();
 		board.result();
 	}
 }
