@@ -1,11 +1,11 @@
-package User;
+package gui;
 
-public class Player {
+public class Piece {
 	private int y;
 	private int x;
 	private int color;
 	
-	public Player(int y,int x,int color) {
+	public Piece(int y,int x,int color) {
 		this.y=y;
 		this.x=x;
 		this.color=color;

@@ -1,32 +1,31 @@
-package game;
+package gui;
 
-import Source.Size;
-import User.Player;
+import source.Dimensions;
 
-public class GameInfo {
-	Size size;
+public class Rule {
+	Dimensions dim;
 	private int map[][];
 	private int turn = 1;
 	
-	public GameInfo(Size _size) {
-		size = _size;
-		map = new int[size.getSize()][size.getSize()];
+	public Rule(Dimensions dim) {
+		this.dim = dim;
+		map = new int[dim.getSize()][dim.getSize()];
 	}
 	
 	public void init() {
-		for (int i = 0; i < size.getSize(); i++) {
-			for (int j = 0; j < size.getSize(); j++) {
+		for (int i = 0; i < dim.getSize(); i++) {
+			for (int j = 0; j < dim.getSize(); j++) {
 				map[i][j] = 0;
 			}
 		}
 	}
 	
-	public void inputWord(Player player) {
+	public void inputWord(Piece player) {
 		map[player.getY()][player.getX()] = player.getColor();
 	}
 	
 	public boolean checkInput(int y, int x) {
-		if (y < 0 || y > size.getSize() || x < 0 || x > size.getSize() || map[y][x] != 0 ) {
+		if (y < 0 || y > dim.getSize() || x < 0 || x > dim.getSize() || map[y][x] != 0 ) {
 			return false;
 		}
 		return true;
@@ -48,7 +47,7 @@ public class GameInfo {
 		return turn;
 	}
 	
-	public boolean endGame(Player player) {
+	public boolean endGame(Piece player) {
 		return false;
 	}
 	
