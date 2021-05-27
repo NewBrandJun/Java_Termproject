@@ -17,42 +17,23 @@ public class RoomFrame extends JFrame{
 	private Dimensions dim;
 	private Images img;
 	
-	// Game Rule & Information
 	private Rule rule;
-	// Game Score & Turn Panel
 	private ScorePanel sp;
-	// Game Board Panel
 	private BoardPanel bp;
-	// Game Chat Panel
 	private ChatPanel cp;
-	// Game Exit & Hint Panel
 	private ExitPanel ep;
 	
-	public RoomFrame(Dimensions dim, Images img) 
+	public RoomFrame(Dimensions dim, Images img, Rule rule) 
 	{
 		this.dim = dim;		
 		this.img = img;
-		this.rule = new Rule(dim);
-		
-		sp = new ScorePanel(dim, rule, img);
-		bp = new BoardPanel(dim, rule, img);
-		cp = new ChatPanel();
-		ep = new ExitPanel(img);
-		
-//		rma = new RoomMouseAction(bp, dim, rule, sp);
-		
+		this.rule = rule;
+				
 		setBackground(Color.gray);
 		setBounds(0, 0, dim.getFrameRow(), dim.getFrameCol());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		createMenu();
-	
-//		addMouseListener(rma);
-	
-		add(sp);
-		add(bp);
-		add(cp);
-		add(ep);
+		createMenu();			
 		
 		setVisible(false);
 //		setResizable(false);

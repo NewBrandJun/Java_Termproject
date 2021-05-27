@@ -5,11 +5,13 @@ import source.Dimensions;
 public class Rule {
 	Dimensions dim;
 	private int map[][];
+	private boolean start_flag;
 	private int turn = 1;
 	
 	public Rule(Dimensions dim) {
 		this.dim = dim;
 		map = new int[dim.getSize()][dim.getSize()];
+		start_flag = false;
 	}
 	
 	public void init() {
@@ -51,5 +53,12 @@ public class Rule {
 		return false;
 	}
 	
+	public boolean getStartFlag() {
+		return start_flag;
+	}
+	
+	public void setStartFlag(boolean flag) {
+		start_flag = flag;
+	}
 	
 }

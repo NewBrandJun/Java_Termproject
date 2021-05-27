@@ -18,7 +18,6 @@ public class ExitPanel extends JPanel{
 	private JLabel l_hint3;
 	private JLabel l_exit;
 
-
 	private ImageIcon ic_hint;
     private ImageIcon ic_no_hint;
     private ImageIcon ic_exit;
@@ -29,8 +28,8 @@ public class ExitPanel extends JPanel{
 		setBounds(660,0,240,60);		
 		setLayout(new GridLayout(0,4));
 		
-		ic_hint = new ImageIcon(img.getBulbLightImage());
-		ic_no_hint = new ImageIcon(img.getBulbNoLightImage());
+		ic_hint = new ImageIcon(img.getHintImage());
+		ic_no_hint = new ImageIcon(img.getNoHintImage());
 		ic_exit = new ImageIcon(img.getExitImage());
 		
 		l_hint1 = new JLabel(ic_hint);
@@ -48,6 +47,20 @@ public class ExitPanel extends JPanel{
 	        public void mouseClicked(MouseEvent e)   
 	        {   
 	              l_hint1.setIcon(ic_no_hint);
+	        }   
+		});
+		
+		l_hint2.addMouseListener(new MouseAdapter() {		 
+	        public void mouseClicked(MouseEvent e)   
+	        {   
+	              l_hint2.setIcon(ic_no_hint);
+	        }   
+		});
+		
+		l_hint3.addMouseListener(new MouseAdapter() {		 
+	        public void mouseClicked(MouseEvent e)   
+	        {   
+	              l_hint3.setIcon(ic_no_hint);
 	        }   
 		});
 	}	

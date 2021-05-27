@@ -6,10 +6,11 @@ import source.Dimensions;
 import source.Images;
 
 public class Room {
+	int id;
     String title;
-    int count;
     Vector<Player> players;
-
+    int ready_count;
+    
     public Room() {
     	players = new Vector<>();
 	} 

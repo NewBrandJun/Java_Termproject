@@ -10,7 +10,8 @@ import java.util.Vector;
 import source.Dimensions;
 
 public class Player extends Thread{
-
+	private int id;
+	
 	// From Server
 	private Vector<Player> wait_players;
 	private Vector<Room> rooms;
@@ -35,6 +36,8 @@ public class Player extends Thread{
 	private float[] rangeY_upper;
 	
 	public Player(Socket s, Server server) { 
+		id = 1;
+		
 		wait_players = server.wait_players;
 		rooms = server.rooms;
 		
@@ -108,8 +111,12 @@ public class Player extends Thread{
 						room = new Room();
 						// Receive Room Title
 						room.title = messages[1];
-						room.count = 1;
+						room.ready_count = 0;
+						
+						// room unique id
+						room.id = id++;
 						rooms.add(room);
+						
 						
 						wait_players.remove(this);
 						room.players.add(this);
@@ -124,11 +131,10 @@ public class Player extends Thread{
 
 					case "EnterRoom": 
 						// Enter Room
-						for(int i=0; i<rooms.size(); i++){//방이름 찾기!!
+						for(int i=0; i<rooms.size(); i++){
 							Room r = rooms.get(i);
-							if(r.title.equals(messages[1])){//일치하는 방 찾음!!		    	        	
+							if(r.title.equals(messages[1])) {
 								room = r;
-								room.count++;//인원수 1증가
 								break;
 							}
 						}
@@ -147,7 +153,6 @@ public class Player extends Thread{
 						
 					case "ExitRoom": 
 						// Receive Exit Signal						
-						room.count--;//인원수 감소
 						
 						// Send Exit Message to Room Players
 						sendMessageRoom("Exit|" + player_name);
@@ -164,6 +169,17 @@ public class Player extends Thread{
 					case "Message":						
 						// Send Message to Room Players
 						sendMessageRoom("Message|["+player_name +"]▶ "+messages[1]);
+						break;
+					case "Ready":						
+						room.ready_count++;
+						
+						if(room.ready_count == 2) {
+							// Game Start
+							sendMessageRoom("Start|");
+						}
+						break;
+					case "UnReady":						
+						room.ready_count--;						
 						break;
 					case "Position":
 						// Piece를 둘 수 있는지 없는지에 대한 Flag
@@ -226,7 +242,7 @@ public class Player extends Thread{
 		String titles = "";
 		for(int i = 0; i < rooms.size(); i++){
 			Room room= rooms.get(i);
-			titles += room.title + "--" + room.count;
+			titles += room.title + "-" + room.id;
 			
 			if(i < rooms.size()-1)
 				titles += ",";

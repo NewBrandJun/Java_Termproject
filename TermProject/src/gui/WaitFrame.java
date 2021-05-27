@@ -36,10 +36,19 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	// Game Room Frame
 	private RoomFrame rf;
 	
-	// From Game Frame
+	// Game Rule & Information
 	private Rule rule;
+	// Game Score & Turn Panel
 	private ScorePanel sp;
+	// Game Board Panel
 	private BoardPanel bp;
+	// Game Chat Panel
+	private ChatPanel cp;
+	// Game Exit & Hint Panel
+	private ExitPanel ep;
+	
+	// From Board Panel
+	private JButton btn_ready;
 	
 	// From ChatPanel
 	private JTextArea ta;
@@ -68,10 +77,28 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		this.dim = dim;
 		this.img = img;
 		
-		setTitle("Othello");
-		setBounds(300,200, 500, 500);
-	    setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setTitle("Othello");
+		this.setBounds(300,200, 500, 500);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    
+	    waitFrameGui();	    
+		roomFrameGui();
+	    getPanelItems();	    
+	    
+	    addMouseClickListener();
+	    addClickListener();
+	    	    	
+	    connectServer();	    
+	    
+	    // Message Thread
+	    new Thread(this).start();
+	    
+	    getPlayerName();	    
+	    	    
+	    this.setVisible(true);
+	}
+	
+	private void waitFrameGui() {
 		// Room List
 		list_room = new JList<String>();
 		list_room.setBorder(new TitledBorder("Game Room List"));
@@ -79,103 +106,137 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		// Wait Players List
 		list_wait = new JList<String>();
 		list_wait.setBorder(new TitledBorder("Wait Clients"));
-										
-	    // Attach Lists to ScrollPane
-	    sp_list_room = new JScrollPane(list_room);
-	    sp_list_wait = new JScrollPane(list_wait);
-	    	   
-	    // Make Buttons
-	    bt_create = new JButton("Create");
-	    bt_enter = new JButton("Enter");
-	    bt_exit = new JButton("Exit"); 
+		
+		// Attach Lists to ScrollPane
+		sp_list_room = new JScrollPane(list_room);
+		sp_list_wait = new JScrollPane(list_wait);
+		
+		// Make Buttons
+		bt_create = new JButton("Create");
+		bt_enter = new JButton("Enter");
+		bt_exit = new JButton("Exit"); 
+		
+		// Build Panel
+		p = new JPanel();
+		
+		// Set Positions
+		sp_list_room.setBounds(10, 10, 300, 300);
+		sp_list_wait.setBounds(10, 320, 300, 130);
+		bt_create.setBounds(320,330,150,30);
+		bt_enter.setBounds(320,370,150,30);
+		bt_exit.setBounds(320,410,150,30);		
+		
+		p.setLayout(null);
+		p.setBackground(Color.gray);
+		p.add(sp_list_room);
+		p.add(sp_list_wait);
+		p.add(bt_create);
+		p.add(bt_enter);
+		p.add(bt_exit);
+		
+		this.add(p);
+	}
+	
+	private void roomFrameGui() {
+		rule = new Rule(dim);
+	    sp = new ScorePanel(dim, rule, img);
+		bp = new BoardPanel(dim, rule, img);
+		cp = new ChatPanel();
+		ep = new ExitPanel(img);
+		
+		// Game Frame
+		rf = new RoomFrame(dim, img, rule);
+		
+		rf.add(sp);
+		rf.add(bp);
+		rf.add(cp);
+		rf.add(ep);
+	}		
+	
+	private void getPanelItems() {
+		// From ChatPanel
+	    ta = cp.getTextArea();
+	    tf = cp.getTextField();
+	    btn_send = cp.getBtnSend();
+	    l_exit = ep.getLabelExit();
 	    
-	    // Build Panel
-	    p = new JPanel();
-
-	    // Set Positions
-	    sp_list_room.setBounds(10, 10, 300, 300);
-	    sp_list_wait.setBounds(10, 320, 300, 130);
-	    bt_create.setBounds(320,330,150,30);
-	    bt_enter.setBounds(320,370,150,30);
-	    bt_exit.setBounds(320,410,150,30);
-
-	    bt_create.addActionListener(this);
-	    bt_enter.addActionListener(this);
-	    bt_exit.addActionListener(this);
-		   
-	    p.setLayout(null);
-	    p.setBackground(Color.gray);
-	    p.add(sp_list_room);
-	    p.add(sp_list_wait);
-	    p.add(bt_create);
-	    p.add(bt_enter);
-	    p.add(bt_exit);
-
-	    add(p);
-	    
-	    // List Room Click Listener
-	    list_room.addMouseListener(new MouseAdapter() {
-		     @Override
-		     public void mouseClicked(MouseEvent e) {
-		    	 String temp = list_room.getSelectedValue();
-		    	 if(temp == null)
-		    		 return;
-				 System.out.println("Select Room Title = " + temp);
-				 r_title = temp.substring(0, temp.indexOf("-"));
-		    }	 
-		 });
-	     
-	    // Game Frame
-	    rf = new RoomFrame(dim, img);
-	    
-	    // From Game Frame
-	    rule = rf.getRule();
-	    bp = rf.getBoardPanel();
-	    sp = rf.getScorePanel();
-	    
-	    // Game Frame Mouse Click Listener (ÁÂÇ¥)
-	    rf.addMouseListener(new MouseAdapter() {			
+	    // From BoardPanel	
+	    btn_ready = bp.getBtnReady();
+	}
+	
+	private void addMouseClickListener() {
+		// List Room Click Listener
+		list_room.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				String temp = list_room.getSelectedValue();
+				if(temp == null)
+					return;
+				System.out.println("Select Room Title = " + temp);
+				r_title = temp.substring(0, temp.indexOf("-"));
+			}	 
+		});
+				
+		// Game Frame Mouse Click Listener (ÁÂÇ¥)
+		rf.addMouseListener(new MouseAdapter() {			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int x = (int)e.getX();
+				int y = (int)e.getY();
+				if(rule.getStartFlag()) {
+					// Send Position
+					sendMessage("Position|" + Integer.toString(x) + "," + Integer.toString(y));							
+					
+				}
+			}	 
+		});
+	
+		
+		l_exit.addMouseListener(new MouseAdapter() {			
 	    	@Override
 	    	public void mousePressed(MouseEvent e) {
-	    		int x = (int)e.getX();
-	    		int y = (int)e.getY();
-	    		// Send Position
-	    		sendMessage("Position|" + Integer.toString(x) + "," + Integer.toString(y));							
+	    		// Send Exit Signal
+				sendMessage("Exit|");
+				
+				// Go back to Wait
+				rf.setVisible(false);
+				setVisible(true); 	
 	    	}	 
 	    });
-	    
-	    // From ChatPanel
-	    ta = rf.getChatPanel().getTextArea();
-	    tf = rf.getChatPanel().getTextField();
-	    btn_send = rf.getChatPanel().getBtnSend();
-	    l_exit = rf.getExitPanel().getLabelExit();
-	    	    
-	    // Connect to Server
+	}
+	
+	private void addClickListener() {
+		bt_create.addActionListener(this);
+		bt_enter.addActionListener(this);
+		bt_exit.addActionListener(this);
+		
+	    btn_send.addActionListener(this);
+		btn_ready.addActionListener(this);
+
+	}
+	
+	private void connectServer() {
+		// Connect to Server
 	    try {
 			Socket socket = new Socket("localhost", 8000);	  
 
 			from_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			to_server = socket.getOutputStream();
-
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}  
-	    
-	    // Message Thread
-	    new Thread(this).start();
-	    
-	    // Get Player Name
+	}
+	
+	private void getPlayerName() {
+		// Get Player Name
 	    String player_name = JOptionPane.showInputDialog(this,"Player name:");
 	    
 	    // Send connect signal
 	    sendMessage("Connect|");		    
 	    // Send Player Name
 	    sendMessage("PlayerName|" + player_name);
-	    
-	    
-	    setVisible(true);
 	}
 	
 	@Override
@@ -211,14 +272,6 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		}else if(object == bt_exit){
 			// Exit
 			System.exit(0);
-		}	
-		else if(object == l_exit){			
-			// Send Exit Signal
-			sendMessage("Exit|");
-			
-			// Go back to Wait
-			rf.setVisible(false);
-			setVisible(true); 
 		}else if(object == btn_send){		
 			String message = tf.getText();
 			
@@ -226,7 +279,18 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				sendMessage("Message|" + message); 				
 				tf.setText("");				
 			}			
-		}	  		
+		}else if(object == btn_ready) {
+			if(bp.getReady() == 1) {
+				bp.setReadyPressImageIcon();
+				bp.setReady(2);
+				sendMessage("Ready|");				
+			}else {
+				bp.setReadyImageIcon();
+				bp.setReady(1);
+				sendMessage("UnReady|");	
+			}
+			
+		}	
 	}	
 
 	public void run(){
@@ -266,6 +330,11 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Receive Message				
 					ta.append(messages[1]+"\n");
 					ta.setCaretPosition(ta.getText().length());
+					break;
+				case "Start":
+					// Game Start					
+					btn_ready.setVisible(false);
+					rule.setStartFlag(true);
 					break;
 				case "Position":
 					// Receive Position
