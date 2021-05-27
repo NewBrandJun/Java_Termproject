@@ -7,9 +7,9 @@ import java.util.Vector;
 
 public class Server implements Runnable{
 	// Wait Players
-	public Vector<Player> wait_players;
+	static Vector<Player> wait_players;
 	// All Rooms
-	public Vector<Room> rooms;
+	static Vector<Room> rooms;
 	
 	public Server() {
 		wait_players = new Vector<>();
@@ -29,7 +29,7 @@ public class Server implements Runnable{
 				// ´ë±â
 				Socket socket = server_socket.accept();
 				
-				Player player = new Player(socket, this);
+				Player player = new Player(socket, wait_players, rooms);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

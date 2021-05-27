@@ -13,6 +13,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Vector;
 
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -305,9 +306,12 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				switch(cmd){				
 				case "Rooms":
 					// Receive Rooms
-					if(messages.length > 1){						
+					if(messages.length > 1){					
 						String[] rooms = messages[1].split(",");
 						list_room.setListData(rooms);
+					}
+					else {
+						list_room.setModel(new DefaultListModel());
 					}
 					break;
 				case "WaitPlayers":
@@ -335,6 +339,21 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Game Start					
 					btn_ready.setVisible(false);
 					rule.setStartFlag(true);
+					break;
+				case "Error_room_full":
+					// Error Message
+					JOptionPane.showMessageDialog(null, "방이 꽉 찼습니다.");
+					setVisible(true);
+					rf.setVisible(false); 					
+					break;
+				case "Error_location":
+					JOptionPane.showMessageDialog(null, "잘못된 위치입니다.");
+					break;
+				case "Error_turn":
+					JOptionPane.showMessageDialog(null, "상대방의 턴 입니다.");
+					break;	
+				case "Board":
+					JOptionPane.showMessageDialog(null, messages[1]);//board 받음
 					break;
 				case "Position":
 					// Receive Position

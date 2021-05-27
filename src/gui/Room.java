@@ -8,6 +8,7 @@ import source.Images;
 public class Room {
 	int id;
     String title;
+    static Board board = new Board();
     Vector<Player> players;
     int ready_count;
     
