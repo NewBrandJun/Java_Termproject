@@ -41,7 +41,6 @@ public class Player extends Thread{
 		
 		this.wait_players = wait_players;
 		this.rooms = rooms;
-		
 		dim = new Dimensions();
 		
 		this.socket = s;
@@ -114,11 +113,8 @@ public class Player extends Thread{
 						break;
 						
 					case "RoomTitle": 
-						// Create Room
-						room = new Room();
 						// Receive Room Title
-						room.title = messages[1];
-						room.ready_count = 0;
+						room = new Room(messages[1]);
 						
 						// room unique id
 						room.id = id++;
@@ -140,6 +136,7 @@ public class Player extends Thread{
 					
 						System.out.println("Wait Players : "+wait_players);
 						System.out.println("Rooms : "+rooms);
+						sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
 						break;
 
 					case "EnterRoom": 
@@ -176,11 +173,11 @@ public class Player extends Thread{
 						}		
 						System.out.println("Wait Players : "+wait_players);
 						System.out.println("Rooms : "+rooms);
+						sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
 						break;
 						
 					case "Exit": 
-						// Receive Exit Signal						
-						
+						// Receive Exit Signal							
 						// Send Exit Message to Room Players
 						sendMessageRoom("ExitRoom|" + player_name);
 						
@@ -202,6 +199,7 @@ public class Player extends Thread{
 						if(room.players.size()==0) {
 							synchronized (rooms) {
 								rooms.remove(room);
+								room =null;
 							}							
 						}else {
 							// 방에 있는 다른 player에게는 나갔다는 메시지 보낸 후 ready button 초기화
@@ -291,6 +289,9 @@ public class Player extends Thread{
 				                				room.board.count();
 				                				room.board.turn++;
 				                				sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
+				                				if(room.board.end()) {
+				                					sendMessageRoom("Endgame|" + room.board.result());
+				                				}
 				                 				
 				                			}
 				                			else{//놓을 수 없음
@@ -298,16 +299,8 @@ public class Player extends Thread{
 				                			}            			
 				                		}
 				                		else {//pass
-				                			//TODO:pass
-				                			if (room.board.turn-room.board.temp==1) {
-				                				/*sendMsg(code_p1+"/"+"ENDGAME");
-				                				sendMsg(code_p2+"/"+"ENDGAME");
-				                				board.print();
-				                				board.result();*/
-				                				//TODO:양측에 game종료 선언, position 전송, 결과전송
-				                				
-				                			}
-				                			room.board.temp = room.board.turn;
+				                			room.board.turn++;
+				                			sendMessageRoom("Board|" + room.board.print()+ "," + Integer.toString(room.board.turn));//room에 board전송
 				                		}
 				        			}       			
 				        			else {//짝수턴이 아님
@@ -323,6 +316,9 @@ public class Player extends Thread{
 				                				room.board.count();
 				                				room.board.turn++;
 				                				sendMessageRoom("Board|" + room.board.print()+ "," + Integer.toString(room.board.turn));//room에 board전송
+				                				if(room.board.end()) {
+				                					sendMessageRoom("Endgame|" + room.board.result());
+				                				}
 				                 				
 				                			}
 				                			else{//놓을 수 없음
@@ -330,20 +326,12 @@ public class Player extends Thread{
 				                			}            			
 				                		}
 				                		else {//pass
-				                			//TODO:pass
-				                			if (room.board.turn-room.board.temp==1) {
-				                				/*sendMsg(code_p1+"/"+"ENDGAME");
-				                				sendMsg(code_p2+"/"+"ENDGAME");
-				                				board.print();
-				                				board.result();*/
-				                				//TODO:양측에 game종료 선언, position 전송, 결과전송
-				                				
-				                			}
-				                			room.board.temp = room.board.turn;
+				                			room.board.turn++;
+				                			sendMessageRoom("Board|" + room.board.print()+ "," + Integer.toString(room.board.turn));//room에 board전송
 				                		}
 				        			}       			
 				        			else {//홀수턴이 아님
-				        				sendMessageRoom("Error_turn|" );//turn error
+				        				sendMessage("Error_turn|" );//turn error
 				        			}           		
 				                }
 								

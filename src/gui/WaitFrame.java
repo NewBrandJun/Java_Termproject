@@ -430,7 +430,9 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					
 					break;
 				case "Endgame":
-					//TODO:ENDGAME
+					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "¹éµ¹ÀÇ ½Â¸®!");
+					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "Èæµ¹ÀÇ ½Â¸®!");
+					else JOptionPane.showMessageDialog(null, "¹«½ÂºÎ!");
 					break;
 				}			
 			}
