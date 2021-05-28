@@ -247,7 +247,6 @@ public class Board {
 				else if(board[i][j].getColor()=='w') this.white++;
 			}
 		}
-		System.out.println("\nblack: " + this.black + "\twhite: " + this.white + "\n");
 	}
 	
 	public boolean check(char player_color) {
@@ -309,9 +308,15 @@ public class Board {
 		return true;
 	}
 	
-	public void result() {
-		if(black>white)System.out.println("Black Win");
-		else if(white>black)System.out.println("White Win");
-		else if(white==black) System.out.println("Drawn");
+	public boolean end() {
+		if (this.black + this.white == 64) return true;
+		else if (this.black ==0 || this.white == 0) return true;
+		else return false;
+	}
+	
+	public char result() {
+		if(black>white) return('b');
+		else if(white>black) return ('w');
+		else return ('d');
 	}
 }

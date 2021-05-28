@@ -8,11 +8,14 @@ import source.Images;
 public class Room {
 	int id;
     String title;
-    static Board board = new Board();
+    static Board board;
     Vector<Player> players;
     int ready_count;
     
-    public Room() {
-    	players = new Vector<>();
+    public Room(String title) {
+    	this.players = new Vector<>();
+    	this.board = new Board();
+    	this.ready_count = 0;
+    	this.title = title;
 	} 
 }
