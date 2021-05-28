@@ -130,12 +130,14 @@ public class Player extends Thread{
 						}						
 						room.players.add(this);
 						
+						
 						// Send Enter Signal
 						sendMessageRoom("EnterRoom|" + player_name);
 						// Send Rooms
 						sendMessageWait("Rooms|"+ getRooms());
 						// Send Wait Players
 						sendMessageWait("WaitPlayers|"+ getWaitPlayers());
+					
 						System.out.println("Wait Players : "+wait_players);
 						System.out.println("Rooms : "+rooms);
 						break;
@@ -167,7 +169,7 @@ public class Player extends Thread{
 										// Send Rooms
 										sendMessageWait("Rooms|"+ getRooms());
 										// Send Wait Players
-										sendMessageWait("WaitPlayers|"+ getWaitPlayers());							
+										sendMessageWait("WaitPlayers|"+ getWaitPlayers());	
 									}							
 								}
 							}													
@@ -181,6 +183,17 @@ public class Player extends Thread{
 						
 						// Send Exit Message to Room Players
 						sendMessageRoom("ExitRoom|" + player_name);
+						
+						// 각 Player들의 board 초기화
+						room.board.init();
+						room.board.turn = 0;
+						room.ready_count = 0;						
+						sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
+						
+						// 나가는 player의 chatting area, ready button 초기화						
+						sendMessage("RoomFrameInit|");
+																							
+							
 						room.players.remove(this);	
 						//synchronized (wait_players) {
 							wait_players.add(this);
@@ -190,7 +203,11 @@ public class Player extends Thread{
 							synchronized (rooms) {
 								rooms.remove(room);
 							}							
+						}else {
+							// 방에 있는 다른 player에게는 나갔다는 메시지 보낸 후 ready button 초기화
+							sendMessageRoom("ExitPlayer|");	
 						}
+						
 						// Send Rooms
 						sendMessageWait("Rooms|"+ getRooms());
 						// Send Wait Players
@@ -331,7 +348,6 @@ public class Player extends Thread{
 				                }
 								
 							}
-							//sendMessageRoom("Position|" + Integer.toString(x) + "," + Integer.toString(y));
 						}						
 						break;
 					}
@@ -403,6 +419,18 @@ public class Player extends Thread{
 		}
 	}
 	
+	// Send Message to Other Player in Room
+	public void sendMessageOtherPlayer(String message) {
+		for(int i =0; i < room.players.size(); i++) {
+			Player player = room.players.get(i);
+			if(player.player_name.equals(player_name)) {
+				// pass
+			}else {
+				System.out.println(player.player_name);
+				sendMessage(message);
+			}
+		}
+	}
 	public void sendMessage(String message){
 		try {
 			to_client.write((message + "\n").getBytes());

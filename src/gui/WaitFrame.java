@@ -79,7 +79,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		this.img = img;
 		
 		this.setTitle("Othello");
-		this.setBounds(300,200, 500, 500);
+		this.setBounds(300,200, 480, 400);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    
 	    waitFrameGui();	    
@@ -97,6 +97,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    getPlayerName();	    
 	    	    
 	    this.setVisible(true);
+		this.setResizable(false);
 	}
 	
 	private void waitFrameGui() {
@@ -121,11 +122,11 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		p = new JPanel();
 		
 		// Set Positions
-		sp_list_room.setBounds(10, 10, 300, 300);
-		sp_list_wait.setBounds(10, 320, 300, 130);
-		bt_create.setBounds(320,330,150,30);
-		bt_enter.setBounds(320,370,150,30);
-		bt_exit.setBounds(320,410,150,30);		
+		bt_create.setBounds(30,10,100,30);
+		bt_enter.setBounds(180,10,100,30);
+		bt_exit.setBounds(330,10,100,30);		
+		sp_list_room.setBounds(10, 50, 300, 300);
+		sp_list_wait.setBounds(320, 50, 130, 300);
 		
 		p.setLayout(null);
 		p.setBackground(Color.gray);
@@ -175,6 +176,17 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					return;
 				System.out.println("Select Room Title = " + temp);
 				r_title = temp.substring(0, temp.indexOf("-"));
+				
+				// Double Click
+				if(e.getClickCount() == 2 && !e.isConsumed()) {
+					e.consume();
+					// Enter Room
+					sendMessage("EnterRoom|"+ r_title);
+
+					// Enter Room Frame
+					setVisible(false);
+					rf.setVisible(true);
+				}
 			}	 
 		});
 				
@@ -196,12 +208,15 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		l_exit.addMouseListener(new MouseAdapter() {			
 	    	@Override
 	    	public void mousePressed(MouseEvent e) {
-	    		// Send Exit Signal
-				sendMessage("Exit|");
-				
-				// Go back to Wait
-				rf.setVisible(false);
-				setVisible(true); 	
+	    		int res = JOptionPane.showConfirmDialog(null, "방을 나가시겠습니까?", "Confirm", JOptionPane.YES_NO_OPTION);
+	    		if(res == JOptionPane.YES_OPTION) {	    			
+	    			// Send Exit Signal
+	    			sendMessage("Exit|");
+	    			
+	    			// Go back to Wait
+	    			rf.setVisible(false);
+	    			setVisible(true); 
+	    		}
 	    	}	 
 	    });
 	}
@@ -233,7 +248,12 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	private void getPlayerName() {
 		// Get Player Name
 	    String player_name = JOptionPane.showInputDialog(this,"Player name:");
-	    
+	    if(player_name == null) {
+	    	/*
+	    	 * 소켓 close 추가
+	    	 */
+	    	System.exit(0);
+	    }
 	    // Send connect signal
 	    sendMessage("Connect|");		    
 	    // Send Player Name
@@ -248,14 +268,16 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 			// Room Title
 			String title_new_room = JOptionPane.showInputDialog(this,"Room Title:");
 			
-			// Send Room Title
-			sendMessage("RoomTitle|" + title_new_room);		
-			// Set room frame title
-			rf.setTitle("[" + title_new_room + "]");
-
-			// Enter Room Frame
-			setVisible(false);
-			rf.setVisible(true); 
+			if(title_new_room != null) {
+				// Send Room Title
+				sendMessage("RoomTitle|" + title_new_room);		
+				// Set room frame title
+				rf.setTitle("[" + title_new_room + "]");
+				
+				// Enter Room Frame
+				setVisible(false);
+				rf.setVisible(true); 				
+			}			
 			
 		}else if(object == bt_enter){			
 			if(r_title == null){
@@ -322,7 +344,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Receive Room Title
 					rf.setTitle("[" + messages[1] + "]");					
 					break; 
-				case "EnterRoom":	
+				case "EnterRoom":						
 					ta.append("<[" + messages[1] + "]님 입장>\n");					
 					ta.setCaretPosition(ta.getText().length());					
 					break;										
@@ -334,6 +356,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Receive Message				
 					ta.append(messages[1]+"\n");
 					ta.setCaretPosition(ta.getText().length());
+					
 					break;
 				case "Start":
 					// Game Start					
@@ -352,6 +375,31 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				case "Error_turn":
 					JOptionPane.showMessageDialog(null, "상대방의 턴 입니다.");
 					break;	
+				case "RoomFrameInit":
+					// 방에서 나왔다.
+					rule.setStartFlag(false);
+					ta.setText("");
+					btn_ready.setVisible(true);
+					bp.setReadyImageIcon();
+					bp.setReady(1);
+					
+					break;
+					
+				case "ExitPlayer":
+					// 상대방이 방을 나갔다.
+					
+					if(rule.getStartFlag()) {
+						// 게임을 시작했었을 때에만 메세지 띄우기
+						JOptionPane.showMessageDialog(null, "상대방이 게임을 종료했습니다.");
+					}
+					
+					rule.setStartFlag(false);
+					// Room Frame 초기화
+					btn_ready.setVisible(true);
+					bp.setReadyImageIcon();
+					bp.setReady(1);
+					
+					break;
 				case "Board":	
 					String[] board = messages[1].split(",");
 	
@@ -383,40 +431,6 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					break;
 				case "Endgame":
 					//TODO:ENDGAME
-					break;
-				case "Position":
-					// Receive Position
-//					String pos[] = messages[1].split(",");
-//					int x = Integer.parseInt(pos[0]);
-//					int y = Integer.parseInt(pos[1]);
-//							
-//					if(rule.getMap()[y][x] == 0) {
-//						// Update Piece on the Board
-//						Piece piece = new Piece(y, x, rule.getCurPlayer());
-//						rule.inputWord(piece);
-//						rule.nextPlayer(rule.getCurPlayer());
-//						
-//						// Arrow 
-//						sp.changeTurn();
-//						// Score
-//						sp.changeCount();
-//						
-//						// Redraw Board
-//						bp.repaint();
-//						
-//						// End Condition
-//						if(rule.endGame(piece) == true) {
-//							String ms;
-//							if(piece.getColor()==1) {
-//								ms="검돌승리!";
-//							}
-//							else if(piece.getColor()==2) {
-//								ms="백돌승리!";
-//							}
-////							showWin(ms);
-//							rule.init();
-//						}
-//					}
 					break;
 				}			
 			}

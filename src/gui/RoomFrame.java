@@ -36,7 +36,7 @@ public class RoomFrame extends JFrame{
 		createMenu();			
 		
 		setVisible(false);
-//		setResizable(false);
+		setResizable(false);
 		rule.init();	
 	}
 	 

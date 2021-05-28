@@ -4,8 +4,8 @@ public class Dimensions {
 	private final float CELL_ROW = (float) 44.5;
 	private final float CELL_COL = (float) 48.75;
 	private final int SIZE = 8;
-	private final int FRAME_ROW = 900;
-	private final int FRAME_COL = 660;
+	private final int FRAME_ROW = 920;
+	private final int FRAME_COL = 670;
 	private final int ICON = 38;
 	
 	public float getCellRow() {

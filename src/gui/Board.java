@@ -31,6 +31,21 @@ public class Board {
 		}
 	}
 	
+	public void init() {
+		int i, j;
+		for(i=0; i<N; i++) {
+			for(j=0; j<N; j++) {
+				if((i==(N/2)-1 && j==(N/2)-1) || (i==N/2 && j==N/2)) {//white
+					this.board[i][j]= new Othello(i, j, 'w');
+				}
+				else if((i==N/2 && j==(N/2)-1) || (i==(N/2)-1 && j==N/2)) {//black
+					this.board[i][j]= new Othello(i, j, 'b');
+				}
+				else this.board[i][j]= new Othello(i, j, ' ');
+			}
+		}
+	}
+	
 	public String print() {
 		int i, j;
 		String ret = "";

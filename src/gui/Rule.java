@@ -12,6 +12,7 @@ public class Rule {
 		this.dim = dim;
 		map = new int[dim.getSize()][dim.getSize()];
 		start_flag = false;
+		turn = 0;
 	}
 	
 	public void init() {
@@ -20,6 +21,7 @@ public class Rule {
 				map[i][j] = 0;
 			}
 		}
+		
 	}
 	
 	public void inputWord(Piece player) {

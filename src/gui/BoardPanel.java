@@ -40,7 +40,7 @@ public class BoardPanel extends JPanel{
 		// 2 : unready
 		ready = 1;
 		add(btn_ready);
-		btn_ready.setBounds(300,250,100,50);		
+		btn_ready.setBounds(280,250,100,50);		
 		
 	}
 	

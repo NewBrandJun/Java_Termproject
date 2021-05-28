@@ -20,9 +20,9 @@ import source.Dimensions;
 import source.Images;
 
 public class ScorePanel extends JPanel {
-	private Dimensions size;
-	private Rule game_info;
-	private Images images;
+	private Dimensions dim;
+	private Rule rule;
+	private Images img;
 	
 	private JLabel right_arrow_label;
 	private JLabel my_score_label;
@@ -40,10 +40,10 @@ public class ScorePanel extends JPanel {
     private int my_count;
     private int op_count;
     
-	public ScorePanel(Dimensions _size, Rule _game_info, Images _images) {
-		size = _size;
-		game_info = _game_info;
-		images = _images;
+	public ScorePanel(Dimensions dim, Rule rule, Images img) {
+		this.dim = dim;
+		this.rule = rule;
+		this.img = img;
 		
 		setBackground(Color.gray);
 		
@@ -51,10 +51,10 @@ public class ScorePanel extends JPanel {
 
 		setLayout(new GridLayout(0,7));
 
-		sun_image_icon = new ImageIcon(images.getSunImage());
-		rain_image_icon = new ImageIcon(images.getRainImage());
-		right_arrow_image_icon = new ImageIcon(images.getRightArrowImage());
-		left_arrow_image_icon = new ImageIcon(images.getLeftArrowImage());
+		sun_image_icon = new ImageIcon(img.getSunImage());
+		rain_image_icon = new ImageIcon(img.getRainImage());
+		right_arrow_image_icon = new ImageIcon(img.getRightArrowImage());
+		left_arrow_image_icon = new ImageIcon(img.getLeftArrowImage());
 		
 		right_arrow_label = new JLabel(right_arrow_image_icon);
 		my_score_label = new JLabel(sun_image_icon);
@@ -80,11 +80,11 @@ public class ScorePanel extends JPanel {
 	public void changeCount() {
 		my_count = 0;
         op_count = 0;
-		for (int i = 0; i < size.getSize(); i++) {
-			for (int j = 0; j < size.getSize(); j++) {
-				if(game_info.getMap()[i][j] == 2) {
+		for (int i = 0; i < dim.getSize(); i++) {
+			for (int j = 0; j < dim.getSize(); j++) {
+				if(rule.getMap()[i][j] == 2) {
 					op_count++;
-				}else if(game_info.getMap()[i][j] == 1){
+				}else if(rule.getMap()[i][j] == 1){
 					my_count++;
 				}
 			}
@@ -95,7 +95,7 @@ public class ScorePanel extends JPanel {
 	}
 	
 	public void changeTurn() {
-		if(game_info.getTurn() % 2 == 1) {
+		if(rule.getTurn() % 2 == 1) {
 			right_arrow_label.setVisible(true);
 			left_arrow_label.setVisible(false);			
 		}else {
