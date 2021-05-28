@@ -36,7 +36,7 @@ public class Board {
 		String ret = "";
 		for(i=0; i<N; i++) {
 			for(j=0; j<N; j++) {
-				ret+=this.board[i][j].getPr_c()+",";
+				ret+=this.board[i][j].getPr_c()+"";
 			}
 		}
 		return ret;

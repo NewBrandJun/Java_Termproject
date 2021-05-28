@@ -78,31 +78,24 @@ public class ScorePanel extends JPanel {
   	}
 	
 	public void changeCount() {
-		if(game_info.getCurPlayer() == 1) {
-			op_count = 0;
-			for (int i = 0; i < size.getSize(); i++) {
-				for (int j = 0; j < size.getSize(); j++) {
-					if(game_info.getMap()[i][j] == 1) {
-						op_count++;
-					}
+		my_count = 0;
+        op_count = 0;
+		for (int i = 0; i < size.getSize(); i++) {
+			for (int j = 0; j < size.getSize(); j++) {
+				if(game_info.getMap()[i][j] == 2) {
+					op_count++;
+				}else if(game_info.getMap()[i][j] == 1){
+					my_count++;
 				}
 			}
-			op_score.setText(Integer.toString(op_count));			
-		}else {
-			my_count = 0;
-			for (int i = 0; i < size.getSize(); i++) {
-				for (int j = 0; j < size.getSize(); j++) {
-					if(game_info.getMap()[i][j] == 1) {
-						my_count++;
-					}
-				}
-			}
-			my_score.setText(Integer.toString(my_count));
 		}
+		op_score.setText(Integer.toString(op_count));			
+		my_score.setText(Integer.toString(my_count));
+
 	}
 	
 	public void changeTurn() {
-		if(game_info.getCurPlayer() == 1) {
+		if(game_info.getTurn() % 2 == 1) {
 			right_arrow_label.setVisible(true);
 			left_arrow_label.setVisible(false);			
 		}else {

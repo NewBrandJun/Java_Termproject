@@ -352,45 +352,71 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				case "Error_turn":
 					JOptionPane.showMessageDialog(null, "상대방의 턴 입니다.");
 					break;	
-				case "Board":
-					JOptionPane.showMessageDialog(null, messages[1]);//board 받음
+				case "Board":	
+					String[] board = messages[1].split(",");
+	
+					rule.setTurn(Integer.parseInt(board[1]));
+					
+					int board_idx = 0;
+					
+					for(int i = 0; i < 8; i++) {
+						for(int j = 0 ; j < 8; j++) {
+							if(board[0].charAt(board_idx) == '□') {
+								rule.map[i][j] = 0;								
+							}else if(board[0].charAt(board_idx) == '○') {
+								rule.map[i][j] = 1;	
+							}else {
+								rule.map[i][j] = 2;	
+							}
+							board_idx++;
+						}
+					}
+			
+					// Arrow 
+					sp.changeTurn();
+					// Score
+					sp.changeCount();
+					
+					// Redraw Board
+					bp.repaint();
+					
 					break;
 				case "Endgame":
 					//TODO:ENDGAME
 					break;
 				case "Position":
 					// Receive Position
-					String pos[] = messages[1].split(",");
-					int x = Integer.parseInt(pos[0]);
-					int y = Integer.parseInt(pos[1]);
-							
-					if(rule.getMap()[y][x] == 0) {
-						// Update Piece on the Board
-						Piece piece = new Piece(y, x, rule.getCurPlayer());
-						rule.inputWord(piece);
-						rule.nextPlayer(rule.getCurPlayer());
-						
-						// Arrow 
-						sp.changeTurn();
-						// Score
-						sp.changeCount();
-						
-						// Redraw Board
-						bp.repaint();
-						
-						// End Condition
-						if(rule.endGame(piece) == true) {
-							String ms;
-							if(piece.getColor()==1) {
-								ms="검돌승리!";
-							}
-							else if(piece.getColor()==2) {
-								ms="백돌승리!";
-							}
-//							showWin(ms);
-							rule.init();
-						}
-					}
+//					String pos[] = messages[1].split(",");
+//					int x = Integer.parseInt(pos[0]);
+//					int y = Integer.parseInt(pos[1]);
+//							
+//					if(rule.getMap()[y][x] == 0) {
+//						// Update Piece on the Board
+//						Piece piece = new Piece(y, x, rule.getCurPlayer());
+//						rule.inputWord(piece);
+//						rule.nextPlayer(rule.getCurPlayer());
+//						
+//						// Arrow 
+//						sp.changeTurn();
+//						// Score
+//						sp.changeCount();
+//						
+//						// Redraw Board
+//						bp.repaint();
+//						
+//						// End Condition
+//						if(rule.endGame(piece) == true) {
+//							String ms;
+//							if(piece.getColor()==1) {
+//								ms="검돌승리!";
+//							}
+//							else if(piece.getColor()==2) {
+//								ms="백돌승리!";
+//							}
+////							showWin(ms);
+//							rule.init();
+//						}
+//					}
 					break;
 				}			
 			}

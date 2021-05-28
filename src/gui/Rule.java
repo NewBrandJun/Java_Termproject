@@ -4,9 +4,9 @@ import source.Dimensions;
 
 public class Rule {
 	Dimensions dim;
-	private int map[][];
+	public int map[][];
 	private boolean start_flag;
-	private int turn = 1;
+	private int turn;
 	
 	public Rule(Dimensions dim) {
 		this.dim = dim;
@@ -45,8 +45,12 @@ public class Rule {
 		}		
 	}
 	
-	public int getCurPlayer() {
+	public int getTurn() {
 		return turn;
+	}
+	
+	public int setTurn(int t) {
+		return turn = t;
 	}
 	
 	public boolean endGame(Piece player) {

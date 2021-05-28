@@ -211,7 +211,7 @@ public class Player extends Thread{
 							sendMessageRoom("Start|");
 							room.players.get(0).color = 'b';
 							room.players.get(1).color = 'w';
-							sendMessageRoom("Board|" + room.board.print());//room에 board전송
+							sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
 						}
 						break;
 					case "UnReady":						
@@ -273,7 +273,7 @@ public class Player extends Thread{
 				                				room.board.reverse(y, x, 'b'); //뒤집기
 				                				room.board.count();
 				                				room.board.turn++;
-				                				sendMessageRoom("Board|" + room.board.print());//room에 board전송
+				                				sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
 				                 				
 				                			}
 				                			else{//놓을 수 없음
@@ -305,7 +305,7 @@ public class Player extends Thread{
 				                				room.board.reverse(y, x, 'w'); //뒤집기
 				                				room.board.count();
 				                				room.board.turn++;
-				                				sendMessage("Board|" + room.board.print());//room에 board전송
+				                				sendMessageRoom("Board|" + room.board.print()+ "," + Integer.toString(room.board.turn));//room에 board전송
 				                 				
 				                			}
 				                			else{//놓을 수 없음
