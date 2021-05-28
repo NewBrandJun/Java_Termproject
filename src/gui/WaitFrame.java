@@ -355,6 +355,9 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				case "Board":
 					JOptionPane.showMessageDialog(null, messages[1]);//board ¹ÞÀ½
 					break;
+				case "Endgame":
+					//TODO:ENDGAME
+					break;
 				case "Position":
 					// Receive Position
 					String pos[] = messages[1].split(",");
