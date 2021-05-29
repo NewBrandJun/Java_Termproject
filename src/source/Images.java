@@ -37,6 +37,9 @@ public class Images {
 	private ImageIcon ic_ready_press;
 	private Image i_ready_press;
 	
+	private ImageIcon ic_star;
+	private Image i_star;
+	
     public Images(Dimensions _dim) {
     	dim = _dim;
     	
@@ -69,6 +72,10 @@ public class Images {
     	
     	ic_exit = new ImageIcon("exit.png");
     	i_exit = ic_exit.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
+    	
+    	ic_star = new ImageIcon("star.png");
+    	i_star = ic_star.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
+    	
     }
     
     public Image getBoardImage() {
@@ -138,12 +145,21 @@ public class Images {
     public ImageIcon getReadyImageIcon() {
     	return ic_ready;
     }
+    
     public Image getReadyPressImage() {
     	return i_ready_press;
     }
    
     public ImageIcon getReadyPressImageIcon() {
     	return ic_ready_press;
+    }
+    
+    public Image getStarImage() {
+    	return i_star;
+    }
+   
+    public ImageIcon getStarImageIcon() {
+    	return ic_star;
     }
     
 }

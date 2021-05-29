@@ -22,6 +22,10 @@ public class ExitPanel extends JPanel{
     private ImageIcon ic_no_hint;
     private ImageIcon ic_exit;
     
+    private boolean hint1;
+    private boolean hint2;
+    private boolean hint3;
+    
 	public ExitPanel(Images img){
 		this.img = img;
 		
@@ -43,29 +47,56 @@ public class ExitPanel extends JPanel{
 		add(l_exit);
 	
 		
-		l_hint1.addMouseListener(new MouseAdapter() {		 
-	        public void mouseClicked(MouseEvent e)   
-	        {   
-	              l_hint1.setIcon(ic_no_hint);
-	        }   
-		});
-		
-		l_hint2.addMouseListener(new MouseAdapter() {		 
-	        public void mouseClicked(MouseEvent e)   
-	        {   
-	              l_hint2.setIcon(ic_no_hint);
-	        }   
-		});
-		
-		l_hint3.addMouseListener(new MouseAdapter() {		 
-	        public void mouseClicked(MouseEvent e)   
-	        {   
-	              l_hint3.setIcon(ic_no_hint);
-	        }   
-		});
+		hint1 = true;
+		hint2 = true;
+		hint3 = true;		
 	}	
 	
 	public JLabel getLabelExit() {
 		return l_exit;
 	}
+	
+	public JLabel getLabelHint1() {
+		return l_hint1;
+	}
+	
+	public JLabel getLabelHint2() {
+		return l_hint2;
+	}
+	
+	public JLabel getLabelHint3() {
+		return l_hint3;
+	}
+	
+	public boolean getHint1() {
+		return hint1;
+	}
+	
+	public void setHint1(boolean h) {
+		hint1 = h;
+	}
+	
+	
+	public boolean getHint2() {
+		return hint2;
+	}
+	
+	public void setHint2(boolean h) {
+		hint2 = h;
+	}
+	
+	public boolean getHint3() {
+		return hint3;
+	}
+	
+	public void setHint3(boolean h) {
+		hint3 = h;
+	}
+	public ImageIcon getHintIcon() {
+		return ic_hint;
+	}
+	public ImageIcon getNoHintIcon() {
+		return ic_no_hint;
+	}
+	
 }

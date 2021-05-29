@@ -81,6 +81,8 @@ public class BoardPanel extends JPanel{
 					g.drawImage(img.getSunImage(), (int)(155+(x*dim.getCellRow())), (int)(84+(y*dim.getCellCol())), this);
 				else if(rule.getMap()[y][x]==2)
 					g.drawImage(img.getRainImage(), (int)(155+(x*dim.getCellRow())), (int)(84+(y*dim.getCellCol())), this);		
+				else if(rule.getMap()[y][x]==3)
+					g.drawImage(img.getStarImage(), (int)(155+(x*dim.getCellRow())), (int)(84+(y*dim.getCellCol())), this);
 			}
 		}		
 	}		

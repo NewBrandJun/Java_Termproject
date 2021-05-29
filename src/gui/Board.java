@@ -48,6 +48,15 @@ public class Board {
 	
 	public String print() {
 		int i, j;
+		
+		for(i=0;i<N; i++) {
+			for(j=0; j<N; j++) {
+				if(board[i][j].getPr_c()=='*') {
+					board[i][j].setPr_c('бр');
+				}
+			}
+		}
+		
 		String ret = "";
 		for(i=0; i<N; i++) {
 			for(j=0; j<N; j++) {
@@ -283,6 +292,25 @@ public class Board {
 		}
 		if(this.check>0) return true;
 		return false;
+	}
+	
+	public String print_hint(char player_color) {
+		int i, j;
+		for(i=0;i<N; i++) {
+			for(j=0; j<N; j++) {
+				if(!select(i, j, player_color)) {
+					board[i][j].setPr_c('*');
+				}
+			}
+		}
+		
+		String ret = "";
+		for(i=0; i<N; i++) {
+			for(j=0; j<N; j++) {
+				ret+=this.board[i][j].getPr_c()+"";
+			}
+		}
+		return ret;
 	}
 	
 	public void hint(char player_color) {

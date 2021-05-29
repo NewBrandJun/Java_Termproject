@@ -55,7 +55,12 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	private JTextArea ta;
 	private JTextField tf;
 	private JButton btn_send;
+	
+	// From ExitPanel
 	private JLabel l_exit;
+	private JLabel l_hint1;
+	private JLabel l_hint2;
+	private JLabel l_hint3;
 		
 	// Room & Wait Players List
 	private JList<String> list_room, list_wait;
@@ -160,7 +165,12 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    ta = cp.getTextArea();
 	    tf = cp.getTextField();
 	    btn_send = cp.getBtnSend();
+	    
+	    // From ExitPanel
 	    l_exit = ep.getLabelExit();
+	    l_hint1 = ep.getLabelHint1();
+	    l_hint2 = ep.getLabelHint2();
+	    l_hint3 = ep.getLabelHint3();
 	    
 	    // From BoardPanel	
 	    btn_ready = bp.getBtnReady();
@@ -219,6 +229,41 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    		}
 	    	}	 
 	    });
+		
+		l_hint1.addMouseListener(new MouseAdapter() {			
+	    	@Override
+	    	public void mousePressed(MouseEvent e) {
+	    		// Send Hint Signal
+	    		if(rule.getStartFlag() && ep.getHint1()) {	    			
+	    			sendMessage("Hint|" + "1");	    			
+	    		}
+	    	}	 
+	    });
+		
+		l_hint2.addMouseListener(new MouseAdapter() {			
+	    	@Override
+	    	public void mousePressed(MouseEvent e) {
+	    		// Send Hint Signal
+	    		if(rule.getStartFlag() && ep.getHint2()) {
+	    			l_hint2.setIcon(ep.getNoHintIcon());
+	    			ep.setHint2(false);
+	    			sendMessage("Hint|" + "2");	    			
+	    		}
+	    	}	 
+	    });
+		
+		l_hint3.addMouseListener(new MouseAdapter() {			
+	    	@Override
+	    	public void mousePressed(MouseEvent e) {
+	    		// Send Hint Signal
+	    		if(rule.getStartFlag() && ep.getHint3()) {
+	    			l_hint3.setIcon(ep.getNoHintIcon());
+	    			ep.setHint3(false);
+	    			sendMessage("Hint|" + "3");	    			
+	    		}
+	    	}	 
+	    });
+		
 	}
 	
 	private void addClickListener() {
@@ -383,6 +428,14 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					bp.setReadyImageIcon();
 					bp.setReady(1);
 					
+					ep.setHint1(true);
+					ep.setHint2(true);
+					ep.setHint3(true);
+					
+					l_hint1.setIcon(ep.getHintIcon());
+					l_hint2.setIcon(ep.getHintIcon());
+					l_hint3.setIcon(ep.getHintIcon());
+					
 					break;
 					
 				case "ExitPlayer":
@@ -399,6 +452,14 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					bp.setReadyImageIcon();
 					bp.setReady(1);
 					
+					ep.setHint1(true);
+					ep.setHint2(true);
+					ep.setHint3(true);
+					
+					l_hint1.setIcon(ep.getHintIcon());
+					l_hint2.setIcon(ep.getHintIcon());
+					l_hint3.setIcon(ep.getHintIcon());
+					
 					break;
 				case "Board":	
 					String[] board = messages[1].split(",");
@@ -413,8 +474,11 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 								rule.map[i][j] = 0;								
 							}else if(board[0].charAt(board_idx) == '¡Û') {
 								rule.map[i][j] = 1;	
-							}else {
+							}else if(board[0].charAt(board_idx) == '¡Ü'){
 								rule.map[i][j] = 2;	
+							}else {
+								// hint
+								rule.map[i][j] = 3;
 							}
 							board_idx++;
 						}
@@ -428,6 +492,18 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Redraw Board
 					bp.repaint();
 					
+					break;
+				case "NoHint":
+					if(messages[1].equals("1")) {
+						l_hint1.setIcon(ep.getNoHintIcon());
+						ep.setHint1(false);						
+					}else if(messages[1].equals("2")) {
+						l_hint2.setIcon(ep.getNoHintIcon());
+						ep.setHint2(false);	
+					}else {
+						l_hint3.setIcon(ep.getNoHintIcon());
+						ep.setHint3(false);	
+					}
 					break;
 				case "Endgame":
 					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "¹éµ¹ÀÇ ½Â¸®!");

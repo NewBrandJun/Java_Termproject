@@ -232,6 +232,13 @@ public class Player extends Thread{
 					case "UnReady":						
 						room.ready_count--;						
 						break;
+					case "Hint":
+						if((color == 'b' && room.board.turn%2 == 0) ||
+								(color == 'w' && room.board.turn%2 == 1) ) {
+							sendMessage("Board|" + room.board.print_hint(color) + "," + Integer.toString(room.board.turn));					
+							sendMessage("NoHint|" + messages[1]);
+						}
+						break;
 					case "Position":
 						// Piece를 둘 수 있는지 없는지에 대한 Flag
 						Boolean possible = true;
