@@ -13,9 +13,7 @@ public class runGame {
 		 *	select
 		 *	reverse
 		 * }
-		 */
-		
-		/*
+		 * 
 		 * 만약 GUI에서 색을 고르고 변수에 저장할 수 있으면 아래와 같이 변경(예: char player_color= 'w' or 'b')
 		 * 
 		 * board.select(x-1, y-1, player_color);
@@ -34,7 +32,7 @@ public class runGame {
 				board.hint(tmp);
 				int x=0, y=0;//input
 				while(board.select(x-1, y-1, tmp)) {// 이동할 위치 고르기
-					if(num%2==0) System.out.print("Black: "); //검정색 부터 시작
+					if(num%2==0) System.out.print("Black: ");
 					else System.out.print("White: ");
 					x= scn.nextInt();
 					y= scn.nextInt();
@@ -43,8 +41,8 @@ public class runGame {
 				board.count();
 			}
 			else {
-				System.out.println("PASS");
 				if(ch-num==-1) break; //2번 연속으로 pass -> 흑, 백 둘다 순서를 넘길 경우
+				System.out.println("PASS");
 				ch=num;
 			}
 			num++;

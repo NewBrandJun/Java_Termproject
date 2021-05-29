@@ -26,7 +26,6 @@ public class Othello {
 	public char getPr_c() {
 		return pr_c;
 	}
-	
 
 	public void setColor(char color) {
 		this.color = color;
