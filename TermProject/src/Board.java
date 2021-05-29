@@ -194,7 +194,7 @@ public class Board {
 		int i, j, xx=0, yy=N, next=0;
 		for(i=x+1; i<N; i++) {
 			for(j=y-1; j>=0; j--) {
-				if((x+y)==(i+j) && board[i][j].getColor()==c) return;
+				if((x+y)==(i+j) && board[i][j].getColor()==' ') return;
 				if((x+y)==(i+j) && board[i][j].getColor()==c) {
 					xx= i; yy= j; next=1; break;
 				}
