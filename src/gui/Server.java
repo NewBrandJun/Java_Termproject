@@ -6,11 +6,12 @@ import java.net.Socket;
 import java.util.Vector;
 
 public class Server implements Runnable{
-	// Wait Players
+	// All Wait Players
 	static Vector<Player> wait_players;
 	// All Rooms
 	static Vector<Room> rooms;
 	
+	// Constructor
 	public Server() {
 		wait_players = new Vector<>();
 		rooms = new Vector<>();
@@ -26,15 +27,14 @@ public class Server implements Runnable{
 			System.out.println("Start Server...");
 			
 			while(true){
-				// ´ë±â
+				// Waiting
 				Socket socket = server_socket.accept();
 				
-				Player player = new Player(socket, wait_players, rooms);
+				new Player(socket, wait_players, rooms);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	   
-		
+		}	   		
 	}
 	
 	public static void main(String[] args) {

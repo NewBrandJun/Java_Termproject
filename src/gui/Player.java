@@ -15,6 +15,7 @@ public class Player extends Thread{
 	// From Server
 	Vector<Player> wait_players;
 	Vector<Room> rooms;
+	private Socket socket;
 	
 	// New Room
 	private Room room;
@@ -23,13 +24,12 @@ public class Player extends Thread{
 	// Data Streams
 	private BufferedReader from_client = null;
 	private OutputStream to_client = null;	
-	
-	private Socket socket;
-	
+		
 	// Player Name
 	private String player_name;
 
 	private Dimensions dim;
+	
 	// 클릭 허용 범위
 	private float[] rangeX_below;
 	private float[] rangeX_upper;
@@ -37,10 +37,12 @@ public class Player extends Thread{
 	private float[] rangeY_upper;
 	
 	public Player(Socket s, Vector<Player> wait_players, Vector<Room> rooms) { 
+		// Room unique id
 		id = 1;
 		
 		this.wait_players = wait_players;
 		this.rooms = rooms;
+		
 		dim = new Dimensions();
 		
 		this.socket = s;
@@ -74,14 +76,12 @@ public class Player extends Thread{
 			rangeY_upper[i] = 233+(i*dim.getCellCol());
 		}						
 	}
-
-	
-	
+		
 	@Override
 	public void run() {
 		try {
 			while(true){
-				// Get Message    
+				// Receive Message    
 				String message = from_client.readLine();
 	
 				if(message == null) return; 
@@ -96,8 +96,7 @@ public class Player extends Thread{
 						// Receive Connect Signal
 						synchronized (wait_players) {
 							wait_players.add(this);							
-						}
-											
+						}											
 						break;
 					
 					case "PlayerName":
@@ -125,8 +124,7 @@ public class Player extends Thread{
 							wait_players.remove(this);
 						}						
 						room.players.add(this);
-						
-						
+												
 						// Send Enter Signal
 						sendMessageRoom("EnterRoom|" + player_name);
 						// Send Rooms
@@ -247,9 +245,7 @@ public class Player extends Thread{
 						String pos[] = messages[1].split(",");
 						int x = Integer.parseInt(pos[0]);
 						int y = Integer.parseInt(pos[1]);
-						
-						
-						
+		
 						// Out of bounds
 						if(x < 163 || y < 194 || x > 510 || y > 574) {
 							break;

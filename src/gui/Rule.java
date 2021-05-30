@@ -3,16 +3,27 @@ package gui;
 import source.Dimensions;
 
 public class Rule {
-	Dimensions dim;
+	// From Wait Frame
+	private Dimensions dim;
 	public int map[][];
+	
+	// True : °ÔÀÓ ½ÃÀÛ
 	private boolean start_flag;
+	
+	// Â¦¼ö : Èæ, È¦¼ö : ¹é
 	private int turn;
 	
 	public Rule(Dimensions dim) {
 		this.dim = dim;
+		
 		map = new int[dim.getSize()][dim.getSize()];
+		
 		start_flag = false;
 		turn = 0;
+	}
+
+	public int[][] getMap(){
+		return map;
 	}
 	
 	public void init() {
@@ -21,32 +32,7 @@ public class Rule {
 				map[i][j] = 0;
 			}
 		}
-		
 	}
-	
-	public void inputWord(Piece player) {
-		map[player.getY()][player.getX()] = player.getColor();
-	}
-	
-	public boolean checkInput(int y, int x) {
-		if (y < 0 || y > dim.getSize() || x < 0 || x > dim.getSize() || map[y][x] != 0 ) {
-			return false;
-		}
-		return true;
-	}
-	
-	public int[][] getMap() {
-		return map;
-	}
-	
-	public void nextPlayer(int _turn) {
-		if(_turn == 1) {
-			turn = 2;
-		}else {
-			turn = 1;
-		}		
-	}
-	
 	public int getTurn() {
 		return turn;
 	}
@@ -54,11 +40,7 @@ public class Rule {
 	public int setTurn(int t) {
 		return turn = t;
 	}
-	
-	public boolean endGame(Piece player) {
-		return false;
-	}
-	
+
 	public boolean getStartFlag() {
 		return start_flag;
 	}

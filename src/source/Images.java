@@ -1,20 +1,21 @@
 package source;
 
 import java.awt.Image;
-
 import javax.swing.ImageIcon;
 
+// ImageIcon & Image Class
 public class Images {
+	// From Main Class
 	private Dimensions dim;
 	
 	private ImageIcon ic_board;
 	private Image i_board;
 
-	private ImageIcon ic_sun;
-	private Image i_sun;
+	private ImageIcon ic_white;
+	private Image i_white;
  
-	private ImageIcon ic_rain;
-	private Image i_rain;
+	private ImageIcon ic_black;
+	private Image i_black;
 	
 	private ImageIcon ic_right_arrow;
 	private Image i_right_arrow;
@@ -40,17 +41,18 @@ public class Images {
 	private ImageIcon ic_star;
 	private Image i_star;
 	
-    public Images(Dimensions _dim) {
-    	dim = _dim;
+	// Constructor
+    public Images(Dimensions dim) {
+    	this.dim = dim;
     	
     	ic_board = new ImageIcon("board.jpg");
-    	i_board = ic_board.getImage().getScaledInstance(660, 540, Image.SCALE_DEFAULT);
+    	i_board = ic_board.getImage().getScaledInstance(dim.getBoardRow(), dim.getBoardCol(), Image.SCALE_DEFAULT);
     	
-    	ic_sun = new ImageIcon("sun.png");
-    	i_sun = ic_sun.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
+    	ic_white = new ImageIcon("white.png");
+    	i_white = ic_white.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
-    	ic_rain = new ImageIcon("rain.png");
-    	i_rain = ic_rain.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
+    	ic_black = new ImageIcon("black.png");
+    	i_black = ic_black.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
     	ic_right_arrow = new ImageIcon("right_arrow.png");
     	i_right_arrow = ic_right_arrow.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
@@ -58,56 +60,56 @@ public class Images {
     	ic_left_arrow = new ImageIcon("left_arrow.png");
     	i_left_arrow = ic_left_arrow.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
-    	ic_hint = new ImageIcon("bulb_light.png");
+    	ic_hint = new ImageIcon("hint.png");
     	i_hint = ic_hint.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
-    	ic_no_hint = new ImageIcon("bulb_no_light.png");
+    	ic_no_hint = new ImageIcon("no_hint.png");
     	i_no_hint = ic_no_hint.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
     	ic_ready = new ImageIcon("ready.jpg");
-    	i_ready = ic_ready.getImage().getScaledInstance(100, 50,Image.SCALE_DEFAULT);
+    	i_ready = ic_ready.getImage().getScaledInstance(dim.getReadyRow(), dim.getReadyCol(),Image.SCALE_DEFAULT);
     	
     	ic_ready_press = new ImageIcon("ready_press.jpg");
-    	i_ready_press = ic_ready_press.getImage().getScaledInstance(100, 50,Image.SCALE_DEFAULT);
+    	i_ready_press = ic_ready_press.getImage().getScaledInstance(dim.getReadyRow(), dim.getReadyCol(),Image.SCALE_DEFAULT);
     	
     	ic_exit = new ImageIcon("exit.png");
     	i_exit = ic_exit.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
     	ic_star = new ImageIcon("star.png");
-    	i_star = ic_star.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
-    	
+    	i_star = ic_star.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);    	
     }
     
+    // Getter     
     public Image getBoardImage() {
     	return i_board;
     }
     
-    public Image getSunImage() {
-    	return i_sun;
+    public Image getWhiteImage() {
+    	return i_white;
     }
     
-    public Image getRainImage() {
-    	return i_rain;
+    public ImageIcon getWhiteImageIcon() {
+    	return ic_white;
     }
     
-    public ImageIcon getSunImageIcon() {
-    	return ic_sun;
+    public Image getBlackImage() {
+    	return i_black;
     }
     
-    public ImageIcon getRainImageIcon() {
-    	return ic_rain;
+    public ImageIcon getBlackImageIcon() {
+    	return ic_black;
     }
     
     public Image getRightArrowImage() {
     	return i_right_arrow;
     }
     
-    public Image getLeftArrowImage() {
-    	return i_left_arrow;
-    }
-    
     public ImageIcon getRightArrowImageIcon() {
     	return ic_right_arrow;
+    }
+    
+    public Image getLeftArrowImage() {
+    	return i_left_arrow;
     }
     
     public ImageIcon getLeftArrowImageIcon() {
@@ -118,12 +120,12 @@ public class Images {
     	return i_hint;
     }
     
-    public Image getNoHintImage() {
-    	return i_no_hint;
-    }
-    
     public ImageIcon getHintImageIcon() {
     	return ic_hint;
+    }
+    
+    public Image getNoHintImage() {
+    	return i_no_hint;
     }
     
     public ImageIcon getNoHintImageIcon() {

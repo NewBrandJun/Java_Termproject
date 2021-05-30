@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Vector;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -48,7 +47,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	// Game Exit & Hint Panel
 	private ExitPanel ep;
 	
-	// From Board Panel
+	// From BoardPanel
 	private JButton btn_ready;
 	
 	// From ChatPanel
@@ -78,27 +77,38 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	// Room Title
 	private String r_title;
 	
-	// 생성자
+	// Constructor
 	public WaitFrame(Dimensions dim, Images img) {
 		this.dim = dim;
 		this.img = img;
 		
 		this.setTitle("Othello");
-		this.setBounds(300,200, 480, 400);
+		// x, y, width, height
+		this.setBounds(300, 200, 480, 400);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	    
-	    waitFrameGui();	    
+		// Wait Frame Gui Setting
+	    waitFrameGui();
+	    
+	    // Room Frame Gui Setting
 		roomFrameGui();
+		
+		// Get Room Frame's Panel Information
 	    getPanelItems();	    
 	    
+	    // Mouse Click Listener Setting
 	    addMouseClickListener();
+	    
+	    // Button Click Listener Setting
 	    addClickListener();
 	    	    	
+	    // Server Connecting Setting
 	    connectServer();	    
 	    
-	    // Message Thread
+	    // Get Message Thread Setting
 	    new Thread(this).start();
 	    
+	    // Get Player Name
 	    getPlayerName();	    
 	    	    
 	    this.setVisible(true);
@@ -133,14 +143,18 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		sp_list_room.setBounds(10, 50, 300, 300);
 		sp_list_wait.setBounds(320, 50, 130, 300);
 		
+		// Panel Attribute
 		p.setLayout(null);
 		p.setBackground(Color.gray);
+		
+		// Add to Panel
 		p.add(sp_list_room);
 		p.add(sp_list_wait);
 		p.add(bt_create);
 		p.add(bt_enter);
 		p.add(bt_exit);
 		
+		// Add Panel
 		this.add(p);
 	}
 	
@@ -182,8 +196,10 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				String temp = list_room.getSelectedValue();
+				
 				if(temp == null)
 					return;
+				
 				System.out.println("Select Room Title = " + temp);
 				r_title = temp.substring(0, temp.indexOf("-"));
 				
@@ -206,6 +222,8 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 			public void mousePressed(MouseEvent e) {
 				int x = (int)e.getX();
 				int y = (int)e.getY();
+				
+				// 게임이 시작했을 때에만 좌표를 보낸다.
 				if(rule.getStartFlag()) {
 					// Send Position
 					sendMessage("Position|" + Integer.toString(x) + "," + Integer.toString(y));							
@@ -213,8 +231,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				}
 			}	 
 		});
-	
-		
+			
 		l_exit.addMouseListener(new MouseAdapter() {			
 	    	@Override
 	    	public void mousePressed(MouseEvent e) {
@@ -223,7 +240,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    			// Send Exit Signal
 	    			sendMessage("Exit|");
 	    			
-	    			// Go back to Wait
+	    			// Go back to Wait Frame
 	    			rf.setVisible(false);
 	    			setVisible(true); 
 	    		}
@@ -234,6 +251,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    	@Override
 	    	public void mousePressed(MouseEvent e) {
 	    		// Send Hint Signal
+	    		// 게임이 시작했고 Hint버튼이 아직 안눌렸을 경우에만 send한다.
 	    		if(rule.getStartFlag() && ep.getHint1()) {	    			
 	    			sendMessage("Hint|" + "1");	    			
 	    		}
@@ -262,18 +280,20 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    			sendMessage("Hint|" + "3");	    			
 	    		}
 	    	}	 
-	    });
-		
+	    });		
 	}
 	
 	private void addClickListener() {
+		// Button Click Listener
 		bt_create.addActionListener(this);
 		bt_enter.addActionListener(this);
 		bt_exit.addActionListener(this);
 		
+		// ChatPanel
 	    btn_send.addActionListener(this);
+	    
+	    // BoardPanel
 		btn_ready.addActionListener(this);
-
 	}
 	
 	private void connectServer() {
@@ -335,19 +355,20 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 
 			// Enter Room Frame
 			setVisible(false);
-			rf.setVisible(true);
-			
+			rf.setVisible(true);			
 		}else if(object == bt_exit){
 			// Exit
 			System.exit(0);
-		}else if(object == btn_send){		
+		}else if(object == btn_send){
 			String message = tf.getText();
 			
 			if(message.length() > 0){				
-				sendMessage("Message|" + message); 				
+				sendMessage("Message|" + message);
 				tf.setText("");				
 			}			
 		}else if(object == btn_ready) {
+			// 1 : unready 상태
+			// 2 : ready 상태
 			if(bp.getReady() == 1) {
 				bp.setReadyPressImageIcon();
 				bp.setReady(2);
@@ -370,7 +391,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 			
 				String cmd = messages[0];
 
-				switch(cmd){				
+				switch(cmd){		
 				case "Rooms":
 					// Receive Rooms
 					if(messages.length > 1){					
@@ -389,19 +410,20 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Receive Room Title
 					rf.setTitle("[" + messages[1] + "]");					
 					break; 
-				case "EnterRoom":						
+				case "EnterRoom":
+					// Show Enter Message to Players
 					ta.append("<[" + messages[1] + "]님 입장>\n");					
 					ta.setCaretPosition(ta.getText().length());					
 					break;										
-				case "ExitRoom"://대화방 퇴장				
+				case "ExitRoom":
+					// Show Exit Message to Player
 					ta.append("<[" + messages[1] + "]님 퇴장>\n");					
 					ta.setCaretPosition(ta.getText().length());					
 					break;								
 				case "Message": 
-					// Receive Message				
+					// Receive Message	& Show
 					ta.append(messages[1]+"\n");
-					ta.setCaretPosition(ta.getText().length());
-					
+					ta.setCaretPosition(ta.getText().length());					
 					break;
 				case "Start":
 					// Game Start					
@@ -421,7 +443,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					JOptionPane.showMessageDialog(null, "상대방의 턴 입니다.");
 					break;	
 				case "RoomFrameInit":
-					// 방에서 나왔다.
+					// Exit Player -> Init Room Frame
 					rule.setStartFlag(false);
 					ta.setText("");
 					btn_ready.setVisible(true);
@@ -434,19 +456,16 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					
 					l_hint1.setIcon(ep.getHintIcon());
 					l_hint2.setIcon(ep.getHintIcon());
-					l_hint3.setIcon(ep.getHintIcon());
-					
-					break;
-					
+					l_hint3.setIcon(ep.getHintIcon());					
+					break;					
 				case "ExitPlayer":
-					// 상대방이 방을 나갔다.
-					
+					// 상대방이 방을 나갔다.					
 					if(rule.getStartFlag()) {
 						// 게임을 시작했었을 때에만 메세지 띄우기
 						JOptionPane.showMessageDialog(null, "상대방이 게임을 종료했습니다.");
-					}
-					
+					}					
 					rule.setStartFlag(false);
+					
 					// Room Frame 초기화
 					btn_ready.setVisible(true);
 					bp.setReadyImageIcon();
@@ -458,12 +477,13 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					
 					l_hint1.setIcon(ep.getHintIcon());
 					l_hint2.setIcon(ep.getHintIcon());
-					l_hint3.setIcon(ep.getHintIcon());
-					
+					l_hint3.setIcon(ep.getHintIcon());					
 					break;
-				case "Board":	
+				case "Board":
+					// Receive Board Information
 					String[] board = messages[1].split(",");
 	
+					// Turn Setting
 					rule.setTurn(Integer.parseInt(board[1]));
 					
 					int board_idx = 0;
@@ -471,10 +491,13 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					for(int i = 0; i < 8; i++) {
 						for(int j = 0 ; j < 8; j++) {
 							if(board[0].charAt(board_idx) == '□') {
+								// empty
 								rule.map[i][j] = 0;								
 							}else if(board[0].charAt(board_idx) == '○') {
+								// white
 								rule.map[i][j] = 1;	
 							}else if(board[0].charAt(board_idx) == '●'){
+								// black
 								rule.map[i][j] = 2;	
 							}else {
 								// hint
@@ -484,16 +507,16 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 						}
 					}
 			
-					// Arrow 
+					// Arrow Setting
 					sp.changeTurn();
-					// Score
+					// Score Setting
 					sp.changeCount();
 					
 					// Redraw Board
-					bp.repaint();
-					
+					bp.repaint();					
 					break;
 				case "NoHint":
+					// 힌트 사용 시, 더 이상 사용 할 수 없도록
 					if(messages[1].equals("1")) {
 						l_hint1.setIcon(ep.getNoHintIcon());
 						ep.setHint1(false);						
@@ -505,7 +528,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 						ep.setHint3(false);	
 					}
 					break;
-				case "Endgame":
+				case "Endgame":					
 					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "백돌의 승리!");
 					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "흑돌의 승리!");
 					else JOptionPane.showMessageDialog(null, "무승부!");

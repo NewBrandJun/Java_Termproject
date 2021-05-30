@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import source.Images;
 
 public class ExitPanel extends JPanel{
+	// From Wait Frame
 	private Images img;
 	
 	private JLabel l_hint1;
@@ -22,6 +23,7 @@ public class ExitPanel extends JPanel{
     private ImageIcon ic_no_hint;
     private ImageIcon ic_exit;
     
+    // True : hint available
     private boolean hint1;
     private boolean hint2;
     private boolean hint3;
@@ -29,6 +31,7 @@ public class ExitPanel extends JPanel{
 	public ExitPanel(Images img){
 		this.img = img;
 		
+		// Panel Attribute
 		setBounds(660,0,240,60);		
 		setLayout(new GridLayout(0,4));
 		
@@ -41,12 +44,12 @@ public class ExitPanel extends JPanel{
 		l_hint3 = new JLabel(ic_hint);
 		l_exit = new JLabel(ic_exit);
 		
+		// Add to Panel
 		add(l_hint1);
 		add(l_hint2);
 		add(l_hint3);
 		add(l_exit);
-	
-		
+			
 		hint1 = true;
 		hint2 = true;
 		hint3 = true;		
@@ -92,6 +95,7 @@ public class ExitPanel extends JPanel{
 	public void setHint3(boolean h) {
 		hint3 = h;
 	}
+	
 	public ImageIcon getHintIcon() {
 		return ic_hint;
 	}

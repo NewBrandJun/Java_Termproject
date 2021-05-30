@@ -14,14 +14,10 @@ import source.Images;
 
 // ∞‘¿”πÊ Frame
 public class RoomFrame extends JFrame{
+	// From Wait Frame
 	private Dimensions dim;
-	private Images img;
-	
+	private Images img;	
 	private Rule rule;
-	private ScorePanel sp;
-	private BoardPanel bp;
-	private ChatPanel cp;
-	private ExitPanel ep;
 	
 	public RoomFrame(Dimensions dim, Images img, Rule rule) 
 	{
@@ -82,25 +78,4 @@ public class RoomFrame extends JFrame{
 				
 		}
 	}
-	
-	public Rule getRule() {
-		return rule;
-	}
-	
-	public ScorePanel getScorePanel() {
-		return sp;
-	}
-
-	public BoardPanel getBoardPanel() {
-		return bp;
-	}
-
-	public ChatPanel getChatPanel() {
-		return cp;
-	}
-
-	public ExitPanel getExitPanel() {
-		return ep;
-	}
-
 }
