@@ -183,7 +183,7 @@ public class Player extends Thread{
 						room.board.init();
 						room.board.turn = 0;
 						room.ready_count = 0;						
-						sendMessageRoom("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
+						sendMessageOtherPlayer("Board|" + room.board.print() + "," + Integer.toString(room.board.turn));//room에 board전송
 						
 						// 나가는 player의 chatting area, ready button 초기화						
 						sendMessage("RoomFrameInit|");
@@ -418,7 +418,7 @@ public class Player extends Thread{
 				// pass
 			}else {
 				System.out.println(player.player_name);
-				sendMessage(message);
+				player.sendMessage(message);
 			}
 		}
 	}
