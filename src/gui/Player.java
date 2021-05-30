@@ -23,13 +23,13 @@ public class Player extends Thread{
 	// Data Streams
 	private BufferedReader from_client = null;
 	private OutputStream to_client = null;	
-	
 	private Socket socket;
 	
 	// Player Name
 	private String player_name;
-
 	private Dimensions dim;
+	private boolean runnable;
+	
 	// 클릭 허용 범위
 	private float[] rangeX_below;
 	private float[] rangeX_upper;
@@ -41,6 +41,7 @@ public class Player extends Thread{
 		
 		this.wait_players = wait_players;
 		this.rooms = rooms;
+		this.runnable = true;
 		dim = new Dimensions();
 		
 		this.socket = s;
@@ -80,7 +81,7 @@ public class Player extends Thread{
 	@Override
 	public void run() {
 		try {
-			while(true){
+			while(runnable){
 				// Get Message    
 				String message = from_client.readLine();
 	
@@ -213,6 +214,14 @@ public class Player extends Thread{
 						System.out.println("Wait Players : "+wait_players);
 						System.out.println("Rooms : "+rooms);
 						break;
+					case "ExitPlayer":
+						wait_players.remove(this);
+						from_client.close();
+						to_client.close();
+						socket.close();
+						runnable = false;
+						//Exit form socket
+						
 						
 					case "Message":						
 						// Send Message to Room Players

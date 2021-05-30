@@ -82,10 +82,12 @@ public class Board {
 		
 		int i, yy=0;
 		for(i=y+1; i<N; i++) {
+			if(board[x][i].getColor()==' ') return;
 			if(board[x][i].getColor()==c) {
 				yy=i; break;
 			}
 		}
+		if(yy==0) return;
 		for(i=y+1; i<yy; i++) {
 			if(r==1)board[x][i].setColor(c);
 			this.check++;
@@ -98,6 +100,7 @@ public class Board {
 		
 		int i, yy=N;
 		for(i=y-1; i>=0; i--) {
+			if(board[x][i].getColor()==' ') return;
 			if(board[x][i].getColor()==c) {
 				yy=i; break;
 			}
@@ -113,6 +116,7 @@ public class Board {
 		
 		int i, xx=N;
 		for(i=x-1; i>=0; i--) {
+			if(board[i][y].getColor()==' ') return;
 			if(board[i][y].getColor()==c) {
 				xx=i; break;
 			}
@@ -128,6 +132,7 @@ public class Board {
 		
 		int i, xx=0;
 		for(i=x+1; i<N; i++) {
+			if(board[i][y].getColor()==' ') return;
 			if(board[i][y].getColor()==c) {
 				xx=i; break;
 			}
@@ -144,6 +149,7 @@ public class Board {
 		int i, j, xx=N, yy=0, next=0;
 		for(i=x-1; i>=0; i--) {
 			for(j=y+1; j<N; j++) {
+				if((x+y)==(i+j) && board[i][j].getColor()==' ') return;
 				if((x+y)==(i+j) && board[i][j].getColor()==c) {
 					xx= i; yy= j; next=1; break;
 				}
@@ -167,6 +173,7 @@ public class Board {
 		int i, j, xx=N, yy=N, tx=x-1, ty=y-1, next=0;
 		for(i=x-1; i>=0; i--) {
 			for(j=y-1; j>=0; j--) {
+				if(tx==i && ty==j && board[i][j].getColor()==' ') return;
 				if(tx==i && ty==j && board[i][j].getColor()==c) {
 					xx= i; yy= j; next=1;
 					break;
@@ -193,6 +200,7 @@ public class Board {
 		int i, j, xx=0, yy=0, tx=x+1, ty=y+1, next=0;
 		for(i=x+1; i<N; i++) {
 			for(j=y+1; j<N; j++) {
+				if(tx==i && ty==j && board[i][j].getColor()==' ') return;
 				if(tx==i && ty==j && board[i][j].getColor()==c) {
 					xx= i; yy= j; next=1; break;
 				}
@@ -218,6 +226,7 @@ public class Board {
 		int i, j, xx=0, yy=N, next=0;
 		for(i=x+1; i<N; i++) {
 			for(j=y-1; j>=0; j--) {
+				if((x+y)==(i+j) && board[i][j].getColor()==' ') return;
 				if((x+y)==(i+j) && board[i][j].getColor()==c) {
 					xx= i; yy= j; next=1; break;
 				}
