@@ -73,12 +73,20 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	// Data Streams
 	private BufferedReader from_server = null;
 	private OutputStream to_server = null;
+	private Socket socket;
 
 	// Room Title
 	private String r_title;
 	
+<<<<<<< HEAD
 	// Constructor
+=======
+	private boolean runnable;
+	
+	// 생성자
+>>>>>>> refs/remotes/origin/test
 	public WaitFrame(Dimensions dim, Images img) {
+		this.runnable = true;
 		this.dim = dim;
 		this.img = img;
 		
@@ -299,7 +307,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	private void connectServer() {
 		// Connect to Server
 	    try {
-			Socket socket = new Socket("localhost", 8000);	  
+			socket = new Socket("localhost", 8000);	  
 
 			from_server = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			to_server = socket.getOutputStream();
@@ -314,9 +322,14 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		// Get Player Name
 	    String player_name = JOptionPane.showInputDialog(this,"Player name:");
 	    if(player_name == null) {
-	    	/*
-	    	 * 소켓 close 추가
-	    	 */
+	    	// Exit
+	    	sendMessage("ExitPlayer|");
+	    	runnable = false;
+	    	try {
+	    		socket.close();
+	    	} catch (IOException e1) {
+	    		e1.printStackTrace();
+	    	}			
 	    	System.exit(0);
 	    }
 	    // Send connect signal
@@ -358,6 +371,14 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 			rf.setVisible(true);			
 		}else if(object == bt_exit){
 			// Exit
+			sendMessage("ExitPlayer|");
+			runnable = false;
+			try {
+				socket.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}			
 			System.exit(0);
 		}else if(object == btn_send){
 			String message = tf.getText();
@@ -384,7 +405,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 
 	public void run(){
 		try {
-			while(true){
+			while(runnable){
 				// Read Message
 				String message = from_server.readLine();
 				String messages[] = message.split("\\|");
@@ -515,6 +536,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Redraw Board
 					bp.repaint();					
 					break;
+<<<<<<< HEAD
 				case "NoHint":
 					// 힌트 사용 시, 더 이상 사용 할 수 없도록
 					if(messages[1].equals("1")) {
@@ -531,6 +553,11 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				case "Endgame":					
 					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "백돌의 승리!");
 					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "흑돌의 승리!");
+=======
+				case "Endgame":
+					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "흑돌의 승리!");
+					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "백돌의 승리!");
+>>>>>>> refs/remotes/origin/test
 					else JOptionPane.showMessageDialog(null, "무승부!");
 					break;
 				}			
