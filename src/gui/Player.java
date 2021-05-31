@@ -24,19 +24,12 @@ public class Player extends Thread{
 	// Data Streams
 	private BufferedReader from_client = null;
 	private OutputStream to_client = null;	
-<<<<<<< HEAD
-		
-=======
-	private Socket socket;
 	
->>>>>>> refs/remotes/origin/test
 	// Player Name
 	private String player_name;
 	private Dimensions dim;
-<<<<<<< HEAD
-=======
+
 	private boolean runnable;
->>>>>>> refs/remotes/origin/test
 	
 	// 클릭 허용 범위
 	private float[] rangeX_below;
@@ -50,11 +43,8 @@ public class Player extends Thread{
 		
 		this.wait_players = wait_players;
 		this.rooms = rooms;
-<<<<<<< HEAD
-		
-=======
+
 		this.runnable = true;
->>>>>>> refs/remotes/origin/test
 		dim = new Dimensions();
 		
 		this.socket = s;
@@ -92,13 +82,8 @@ public class Player extends Thread{
 	@Override
 	public void run() {
 		try {
-<<<<<<< HEAD
-			while(true){
-				// Receive Message    
-=======
 			while(runnable){
 				// Get Message    
->>>>>>> refs/remotes/origin/test
 				String message = from_client.readLine();
 	
 				if(message == null) return; 

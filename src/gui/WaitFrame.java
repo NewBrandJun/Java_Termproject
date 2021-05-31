@@ -78,13 +78,9 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	// Room Title
 	private String r_title;
 	
-<<<<<<< HEAD
-	// Constructor
-=======
 	private boolean runnable;
-	
-	// »ý¼ºÀÚ
->>>>>>> refs/remotes/origin/test
+
+	// Constructor
 	public WaitFrame(Dimensions dim, Images img) {
 		this.runnable = true;
 		this.dim = dim;
@@ -536,7 +532,6 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 					// Redraw Board
 					bp.repaint();					
 					break;
-<<<<<<< HEAD
 				case "NoHint":
 					// ÈùÆ® »ç¿ë ½Ã, ´õ ÀÌ»ó »ç¿ë ÇÒ ¼ö ¾øµµ·Ï
 					if(messages[1].equals("1")) {
@@ -550,14 +545,9 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 						ep.setHint3(false);	
 					}
 					break;
-				case "Endgame":					
-					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "¹éµ¹ÀÇ ½Â¸®!");
-					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "Èæµ¹ÀÇ ½Â¸®!");
-=======
 				case "Endgame":
 					if (messages[1].equals("b")) JOptionPane.showMessageDialog(null, "Èæµ¹ÀÇ ½Â¸®!");
 					else if (messages[1].equals("w")) JOptionPane.showMessageDialog(null, "¹éµ¹ÀÇ ½Â¸®!");
->>>>>>> refs/remotes/origin/test
 					else JOptionPane.showMessageDialog(null, "¹«½ÂºÎ!");
 					break;
 				}			
