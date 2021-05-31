@@ -3,6 +3,8 @@ package gui;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -105,7 +107,10 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    
 	    // Button Click Listener Setting
 	    addClickListener();
-	    	    	
+	   
+	    // Add Enter Listener
+	    addKeyListener();	    	    
+	    
 	    // Server Connecting Setting
 	    connectServer();	    
 	    
@@ -166,7 +171,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 		rule = new Rule(dim);
 	    sp = new ScorePanel(dim, rule, img);
 		bp = new BoardPanel(dim, rule, img);
-		cp = new ChatPanel();
+		cp = new ChatPanel(img);
 		ep = new ExitPanel(img);
 		
 		// Game Frame
@@ -298,6 +303,27 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 	    
 	    // BoardPanel
 		btn_ready.addActionListener(this);
+	}
+	
+	private void addKeyListener() {
+		tf.addKeyListener(new KeyAdapter() 
+		{
+			@Override
+			public void keyPressed(KeyEvent e) {				
+				super.keyPressed(e);
+				int keyCode = e.getKeyCode();
+				switch(keyCode) {
+				case KeyEvent.VK_ENTER:
+					String message = tf.getText();
+					
+					if(message.length() > 0){				
+						sendMessage("Message|" + message);
+						tf.setText("");				
+					}			
+					break;
+				}
+			}
+		});	
 	}
 	
 	private void connectServer() {

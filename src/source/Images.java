@@ -41,6 +41,9 @@ public class Images {
 	private ImageIcon ic_star;
 	private Image i_star;
 	
+	private ImageIcon ic_send;
+	private Image i_send;
+	
 	// Constructor
     public Images(Dimensions dim) {
     	this.dim = dim;
@@ -76,7 +79,10 @@ public class Images {
     	i_exit = ic_exit.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);
     	
     	ic_star = new ImageIcon("star.png");
-    	i_star = ic_star.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);    	
+    	i_star = ic_star.getImage().getScaledInstance(dim.getIcon(), dim.getIcon(),Image.SCALE_DEFAULT);    
+
+    	ic_send = new ImageIcon("send.png");
+    	i_send= ic_send.getImage().getScaledInstance(15, 15,Image.SCALE_DEFAULT);    
     }
     
     // Getter     
@@ -162,6 +168,14 @@ public class Images {
    
     public ImageIcon getStarImageIcon() {
     	return ic_star;
+    }
+    
+    public Image getSendImage() {
+    	return i_send;
+    }
+   
+    public ImageIcon getSendImageIcon() {
+    	return ic_send;
     }
     
 }

@@ -1,16 +1,10 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -63,6 +57,10 @@ public class ScorePanel extends JPanel {
 		white_score = new JLabel(Integer.toString(white_count), SwingConstants.CENTER);
 		l_white_score = new JLabel(ic_black);
 		l_left_arrow = new JLabel(ic_left_arrow);
+		
+		black_score.setFont(new Font("Serif", Font.BOLD, 25));
+		white_score.setFont(new Font("Serif", Font.BOLD, 25));
+		vs.setFont(new Font("Serif", Font.BOLD, 18));
 		
 		add(l_right_arrow);
         add(l_black_score);
