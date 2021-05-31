@@ -25,57 +25,17 @@ public class RoomFrame extends JFrame{
 		this.img = img;
 		this.rule = rule;
 				
+		// Frame Setting
 		setBackground(Color.gray);
 		setBounds(0, 0, dim.getFrameRow(), dim.getFrameCol());
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
-		createMenu();			
 		
 		setVisible(false);
 		setResizable(false);
+		
+		// Board map init
 		rule.init();	
 	}
 	 
-	public void createMenu() {
-		JMenuBar menu_bar = new JMenuBar();
-		MenuActionListener listener = new MenuActionListener();
-		
-		JMenu options = new JMenu("Options");
-		JMenu help = new JMenu("Help");
-		
-		JMenuItem restart = new JMenuItem("restart");
-		JMenuItem exit = new JMenuItem("exit");
-
-		JMenuItem rule = new JMenuItem("rule");
-		
-		options.add(restart);
-		restart.addActionListener(listener);
-		options.add(exit);
-		exit.addActionListener(listener);
-
-		help.add(rule);
-		rule.addActionListener(listener);
-		
-		menu_bar.add(options);
-		menu_bar.add(help);
-		
-		setJMenuBar(menu_bar);
-	}
-	
-	class MenuActionListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			String cmd = e.getActionCommand();
-			
-			switch (cmd) { 
-				case "restart":
-					rule.init();
-					break;
-				case "rule":
-					break;
-				case "exit":
-					break;
-			}
-				
-		}
-	}
 }

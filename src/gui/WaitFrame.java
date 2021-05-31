@@ -232,6 +232,7 @@ public class WaitFrame extends JFrame implements ActionListener, Runnable{
 				int x = (int)e.getX();
 				int y = (int)e.getY();
 				
+				System.out.println(x + "," + y);
 				// 게임이 시작했을 때에만 좌표를 보낸다.
 				if(rule.getStartFlag()) {
 					// Send Position

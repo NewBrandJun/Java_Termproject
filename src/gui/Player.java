@@ -71,11 +71,11 @@ public class Player extends Thread{
 		// y의 click가능한 range
 		rangeY_below = new float[8];
 		for(int i= 0; i < 8;i++) {
-			rangeY_below[i] = 194+(i*dim.getCellCol());
+			rangeY_below[i] = 169+(i*dim.getCellCol());
 		}
 		rangeY_upper = new float[8];
 		for(int i= 0; i < 8;i++) {
-			rangeY_upper[i] = 233+(i*dim.getCellCol());
+			rangeY_upper[i] = 208+(i*dim.getCellCol());
 		}						
 	}
 		
@@ -257,7 +257,7 @@ public class Player extends Thread{
 						int y = Integer.parseInt(pos[1]);
 		
 						// Out of bounds
-						if(x < 163 || y < 194 || x > 510 || y > 574) {
+						if(x < 163 || y < 169 || x > 510 || y > 549) {
 							break;
 						}
 						
