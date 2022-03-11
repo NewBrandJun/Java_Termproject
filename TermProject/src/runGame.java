@@ -4,51 +4,35 @@ import java.util.Scanner;
 public class runGame {
 
 	public static void main(String[] args) {
-		
-		
-		/*Procedure of game
-		 *initialize board
-		 *while(not finish){
-		 *	print
-		 *	select
-		 *	reverse
-		 * }
-		 * 
-		 * ¸¸¾à GUI¿¡¼­ »öÀ» °í¸£°í º¯¼ö¿¡ ÀúÀåÇÒ ¼ö ÀÖÀ¸¸é ¾Æ·¡¿Í °°ÀÌ º¯°æ(¿¹: char player_color= 'w' or 'b')
-		 * 
-		 * board.select(x-1, y-1, player_color);
-		 * board.reverse(x-1, y-1, player_color);
-		 */
-		
-		Board board= new Board();// °ÔÀÓ ½ÃÀÛ  & initialize
+		//first edit
+
+		Board board= new Board();// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½  & initialize
 		Scanner scn = new Scanner(System.in);
 		int num=0;
 		int ch=0;
 		while(board.notfinish()) {
 			char tmp='w';
-			if(num%2==0) tmp='b'; //°ËÁ¤»ö ºÎÅÍ ½ÃÀÛ
+			if(num%2==0) tmp='b'; //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			
-			if(board.check(tmp)) {//Pass È®ÀÎ
+			if(board.check(tmp)) {//Pass È®ï¿½ï¿½
 				board.hint(tmp);
 				int x=0, y=0;//input
-				while(board.select(x-1, y-1, tmp)) {// ÀÌµ¿ÇÒ À§Ä¡ °í¸£±â
+				while(board.select(x-1, y-1, tmp)) {// ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 					if(num%2==0) System.out.print("Black: ");
 					else System.out.print("White: ");
 					x= scn.nextInt();
 					y= scn.nextInt();
 				}
-				board.reverse(x-1, y-1, tmp); //µÚÁý±â
+				board.reverse(x-1, y-1, tmp); //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 				board.count();
 			}
 			else {
-				if(ch-num==-1) break; //2¹ø ¿¬¼ÓÀ¸·Î pass -> Èæ, ¹é µÑ´Ù ¼ø¼­¸¦ ³Ñ±æ °æ¿ì
+				if(ch-num==-1) break; //2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ pass -> ï¿½ï¿½, ï¿½ï¿½ ï¿½Ñ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ ï¿½ï¿½ï¿½
 				System.out.println("PASS");
 				ch=num;
 			}
 			num++;
 		}
-		
-		//°á°ú(°ÔÀÓ ³¡)
 		board.print();
 		board.count();
 		board.result();
